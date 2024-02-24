@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tool-Kit
 
-## Getting Started
+Tool-Kit is an application developed using the Next.js and Tailwind technology stack. It aims to integrate various toolsets commonly used in development to facilitate data processing and other development tasks.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The Tool-Kit application currently includes the following features:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [ ] Data Processing Toolset: Provides a variety of data processing tools, including but not limited to data conversion, formatting, filtering, and sorting functions.
+- [ ] Coding Assistance Tools: Integrates common coding assistance features such as JSON formatting, Base64 encoding/decoding, etc.
+- [ ] Text Processing Tools: Offers text processing-related features such as string find and replace, regular expression testing, etc.
+- [ ] Other Utilities: Includes some other handy utilities like a color picker, time converter, etc.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technology Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The Tool-Kit application is built using the following technology stack:
 
-## Learn More
+- Next.js: A lightweight front-end framework built with React, providing features like server-side rendering and static exporting.
+- Tailwind CSS: A highly customizable CSS framework that utilizes utility classes to build interfaces, improving development efficiency while maintaining flexibility.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+If you have any suggestions or feedback, feel free to raise an issue or submit a pull request to help us improve and enhance the Tool-Kit application.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The Tool-Kit application is distributed and used under the MIT License. For more details, please refer to the [LICENSE](./LICENSE) file.
