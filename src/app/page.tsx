@@ -1,12 +1,10 @@
-'use client'
-
 import ToolCard from "@/components/tool-card/tool-card";
-import { NextUIProvider } from '@nextui-org/react';
+import Provider from "@/app/provider";
 
 export default function Page() {
     return (
-        <NextUIProvider>
+        <Provider>
             <ToolCard>Click me</ToolCard>
-        </NextUIProvider>
+        </Provider>
     )
 }
