@@ -1,5 +1,5 @@
 'use client';
-import {code, Input} from "@nextui-org/react";
+import {Input} from "@nextui-org/react";
 import {useState} from "react";
 import {TransWordCase} from "@/features/word-translation/trans-word-case";
 
