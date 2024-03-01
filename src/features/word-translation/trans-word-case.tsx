@@ -1,6 +1,6 @@
 import {TransitionProps} from "@/features/word-translation/helper";
 import {firstWordLowerCase, firstWordUpperCase} from "@/utils/str";
-import {Code} from "@nextui-org/react";
+import {Snippet} from "@nextui-org/react";
 
 
 export function TransWordCase({text = '', type}: TransitionProps) {
@@ -24,10 +24,13 @@ export function TransWordCase({text = '', type}: TransitionProps) {
         case 'lower':
             code = text.toLowerCase()
             break
+        case 'enum':
+            code = text.split(' ').map(_ => _.toUpperCase()).join('_')
+            break
     }
 
-    return <div>
+    return <div className="flex justify-center flex-col">
         <div>{type}</div>
-        {code && <Code>{code}</Code>}
+        <Snippet symbol="" variant="bordered" classNames={{pre: 'word-snippet'}}>{code}</Snippet>
     </div>
 }

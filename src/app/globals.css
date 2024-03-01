@@ -2,7 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-html,body {
-  height: 100%;
-  width: 100%;
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+:root {
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #000;
+        --text: #fff;
+
+    }
+
+    body {
+        background-color: var(--bg);
+        color: var(--text);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: #fff;
+        --text: #000;
+    }
+    body {
+        background-color: var(--bg);
+        color: var(--text);
+    }
 }
