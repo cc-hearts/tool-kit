@@ -2,19 +2,20 @@
 import {Input} from "@nextui-org/react";
 import {useState} from "react";
 import {TransWordCase} from "@/features/word-translation/trans-word-case";
-import './page.css'
 import {TransitionProps, TRANSITION_TYPE} from "@/features/word-translation/helper";
+import './page.css'
 
 export default function WordTransitionLayout() {
     const [word, setWord] = useState('')
-    const translateType: TransitionProps['type'][] = [
+    const translateType: Array<TransitionProps['type']> = [
         TRANSITION_TYPE.KEBAB,
         TRANSITION_TYPE.SNAKE,
         TRANSITION_TYPE.PASCAL,
         TRANSITION_TYPE.UPPER,
         TRANSITION_TYPE.LOWER,
         TRANSITION_TYPE.ENUM,
-        TRANSITION_TYPE.CAMEL] as const
+        TRANSITION_TYPE.CAMEL
+    ] as const
 
     return <div className="h-screen w-screen flex items-center justify-center">
         <div className="w-full max-w-[1000px]">
