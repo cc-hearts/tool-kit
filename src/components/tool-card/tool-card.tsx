@@ -12,7 +12,8 @@ interface Props {
 const ToolCard: React.FC<React.PropsWithChildren<Props>> = ({title, article, url}) => {
     const router = useRouter()
     if (url && !url.includes('http')) {
-        url = location.origin + url
+        const location = globalThis.location || ''
+        url = location + url
     }
     return (
         <div className="bg-gray-400 dark:border-gray-400 overflow-auto rounded-xl cursor-pointer" onClick={() => {
