@@ -4,10 +4,9 @@ import Provider from "@/app/provider";
 import React from "react";
 
 export default function Page() {
-
     const [state] = React.useState([{
         title: 'word transition',
-        logo: '. /img/word-translation-logo.png',
+        logo: './img/word-translation-logo.png',
         article: 'words are translated into different styles of words',
         url: '/word-translation'
     }])
