@@ -13,7 +13,7 @@ export default function Page() {
 
     return <Provider>
         <div className="h-screen">
-            <div className="grid grid-cols-3 gap-3 p-12 max-w-[1200px] m-auto">
+            <div className="grid grid-cols-3 gap-3 p-12 max-w-[1200px] min-w-[1000px] m-auto">
                 {state.map((target, index) => <ToolCard key={index} {...target}></ToolCard>)}
             </div>
         </div>
