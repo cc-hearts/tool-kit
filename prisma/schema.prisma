@@ -19,6 +19,6 @@ model ToolKit {
   id      Int     @id @default(autoincrement())
   title   String
   logo    String?
-  atricle String?
+  article String?
   url     String
 }
