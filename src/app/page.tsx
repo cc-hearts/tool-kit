@@ -9,6 +9,12 @@ export default function Page() {
         logo: './img/word-translation-logo.png',
         article: 'words are translated into different styles of words',
         url: '/word-translation'
+    },
+    {
+        title: 'object to declare',
+        logo: './img/object-to-declare.png',
+        article: 'convert an object back to a json object value',
+        url: 'https://object-to-declare.vercel.app/'
     }])
 
     return <Provider>

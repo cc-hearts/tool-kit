@@ -24,7 +24,7 @@ const ToolCard: React.FC<React.PropsWithChildren<Props>> = ({ logo, title, artic
             router.push(url)
 
         }}>
-            <div className="flex flex-col gap-2 p-4 text-sm bg-white dark:bg-[#1B1C1D] rounded-xl  m-[1px]">
+            <div className="flex flex-col gap-2 p-4 text-sm bg-white dark:bg-[#1B1C1D] rounded-xl  m-[1px] h-[calc(100%-2px)]">
                 <Avatar isBordered radius='full' src={logo} />
                 <div className="text-base text-black dark:text-white">{title}</div>
                 <div className="text-[#536175]">{article}</div>
