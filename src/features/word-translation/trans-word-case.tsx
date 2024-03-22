@@ -31,6 +31,6 @@ export function TransWordCase({text = '', type}: TransitionProps) {
 
     return <div className="flex justify-center flex-col">
         <div>{type}</div>
-        <Snippet symbol="" variant="bordered" classNames={{pre: 'word-snippet'}}>{code}</Snippet>
+        <Snippet variant="bordered" classNames={{pre: 'word-snippet'}}>{code}</Snippet>
     </div>
 }
