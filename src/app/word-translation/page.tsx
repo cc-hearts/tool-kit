@@ -8,13 +8,13 @@ import './page.css'
 export default function WordTransitionLayout() {
     const [word, setWord] = useState('')
     const translateType: Array<TransitionProps['type']> = [
+        TRANSITION_TYPE.CAMEL,
         TRANSITION_TYPE.KEBAB,
         TRANSITION_TYPE.SNAKE,
         TRANSITION_TYPE.PASCAL,
         TRANSITION_TYPE.UPPER,
         TRANSITION_TYPE.LOWER,
         TRANSITION_TYPE.ENUM,
-        TRANSITION_TYPE.CAMEL
     ] as const
 
     return <div className="h-screen w-screen flex items-center justify-center">
