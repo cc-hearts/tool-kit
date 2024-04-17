@@ -1,9 +1,9 @@
-import {TransitionProps} from "@/features/word-translation/helper";
-import {firstWordLowerCase, firstWordUpperCase} from "@/utils/str";
-import {Snippet} from "@nextui-org/react";
+import { TRANSITION_TYPE, TransitionProps } from "@/features/word-translation/helper";
+import { firstWordLowerCase, firstWordUpperCase } from "@/utils/str";
+import { Snippet } from "@nextui-org/react";
 
 
-export function TransWordCase({text = '', type}: TransitionProps) {
+export function TransWordCase({ text = '', type, onTrack }: TransitionProps & { onTrack: (type: TRANSITION_TYPE) => void }) {
     let code
     switch (type) {
         case "camel":
@@ -29,8 +29,12 @@ export function TransWordCase({text = '', type}: TransitionProps) {
             break
     }
 
+    const validationOfReportedData = () => {
+        onTrack(type)
+    }
+
     return <div className="flex justify-center flex-col">
         <div>{type}</div>
-        <Snippet variant="bordered" classNames={{pre: 'word-snippet'}}>{code}</Snippet>
+        <Snippet variant="bordered" classNames={{ pre: 'word-snippet' }} onCopy={validationOfReportedData}>{code}</Snippet>
     </div>
 }

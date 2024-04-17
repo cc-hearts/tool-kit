@@ -22,3 +22,9 @@ model ToolKit {
   article String?
   url     String
 }
+
+model TranslationLogger {
+  id        Int      @id @default(autoincrement())
+  type      String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+}
