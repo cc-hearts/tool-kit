@@ -5,6 +5,7 @@ import { Snippet } from "@nextui-org/react";
 
 export function TransWordCase({ text = '', type, onTrack }: TransitionProps & { onTrack: (type: TRANSITION_TYPE) => void }) {
     let code
+
     switch (type) {
         case "camel":
             code = text.split(' ').map((target, index) => index > 0 ? firstWordUpperCase(target) : firstWordLowerCase(target)).join('')
