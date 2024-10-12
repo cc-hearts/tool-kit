@@ -4,7 +4,7 @@ import { Snippet } from "@nextui-org/react";
 import { useState } from 'react'
 import './page.css'
 
-export default function pathReplace() {
+export default function usePathReplace() {
   const [internalPath, setInternalPath] = useState('')
 
   const formatterPath = internalPath.replaceAll("\\", "/")
