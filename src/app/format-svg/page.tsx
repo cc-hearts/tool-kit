@@ -31,7 +31,7 @@ export default function Page() {
   const node = xml2json(svgStr);
   const js = JSON.parse(node);
   traversePathFill(js);
-  const value = js2xml(js);
+  const value = js2xml(js, { spaces: 2 });
   return (
     <div className="flex items-center ">
       <div className="flex-1">
