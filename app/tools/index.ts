@@ -1,6 +1,9 @@
 import type { ToolMeta } from './types'
 import { toolCategories } from './categories'
 import formatSvg from './format-svg'
+import imageCrop from './image-crop'
+import randomAvatar from './random-avatar'
+import randomName from './random-name'
 import secret from './secret'
 import wordTranslation from './word-translation'
 import yamlToDts from './yaml-to-dts'
@@ -14,6 +17,9 @@ export const tools: ToolMeta[] = [
   formatSvg,
   secret,
   wordTranslation,
+  imageCrop,
+  randomAvatar,
+  randomName,
 ]
 
 export { toolCategories }

@@ -6,6 +6,8 @@ import type { ToolCategory } from './types'
  */
 export const toolCategories: ToolCategory[] = [
   { key: 'converter', label: '格式转换' },
+  { key: 'image', label: '图片处理' },
+  { key: 'fun', label: '趣味生成' },
   { key: 'devtools', label: '开发辅助' },
   { key: 'security', label: '安全加密' },
 ]
