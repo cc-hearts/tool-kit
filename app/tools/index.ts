@@ -2,6 +2,7 @@ import type { ToolMeta } from './types'
 import { toolCategories } from './categories'
 import formatSvg from './format-svg'
 import imageCrop from './image-crop'
+import imagePreview from './image-preview'
 import randomAvatar from './random-avatar'
 import randomName from './random-name'
 import secret from './secret'
@@ -18,6 +19,7 @@ export const tools: ToolMeta[] = [
   secret,
   wordTranslation,
   imageCrop,
+  imagePreview,
   randomAvatar,
   randomName,
 ]
