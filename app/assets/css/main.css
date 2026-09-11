@@ -1,0 +1,88 @@
+/* shadcn 风格语义化设计令牌（zinc 中性色系，RGB 三元组），
+   UnoCSS 与 antdv 主题均对齐到这里，亮暗双模式通过 .dark 切换 */
+:root {
+  --background: 255 255 255;
+  --foreground: 9 9 11;
+  --card: 255 255 255;
+  --card-foreground: 9 9 11;
+  --muted: 244 244 245;
+  --muted-foreground: 113 113 122;
+  --border: 228 228 231;
+  --input: 228 228 231;
+  --primary: 24 24 27;
+  --primary-foreground: 250 250 250;
+  --accent: 244 244 245;
+  --accent-foreground: 24 24 27;
+  --ring: 161 161 170;
+}
+
+.dark {
+  --background: 9 9 11;
+  --foreground: 250 250 250;
+  --card: 16 16 18;
+  --card-foreground: 250 250 250;
+  --muted: 39 39 42;
+  --muted-foreground: 161 161 170;
+  --border: 39 39 42;
+  --input: 39 39 42;
+  --primary: 250 250 250;
+  --primary-foreground: 24 24 27;
+  --accent: 39 39 42;
+  --accent-foreground: 250 250 250;
+  --ring: 212 212 216;
+}
+
+/* 全局兼容性修正 */
+
+/* UnoCSS tailwind reset 将 svg 置为 display: block，
+   会导致 antd 按钮内「图标 + 文字」垂直堆叠，恢复 inline 排版 */
+.ant-btn svg {
+  display: inline-block;
+}
+
+/* 主按钮对齐 shadcn primary 语义（antdv 基础 .ant-btn 透明背景在同优先级下可能压过 primary 变体，
+   双类名提高优先级，颜色统一走主题变量） */
+.ant-btn.ant-btn-primary:not(:disabled) {
+  background-color: rgb(var(--primary));
+  color: rgb(var(--primary-foreground));
+}
+
+.ant-btn.ant-btn-primary:not(:disabled):hover {
+  background-color: rgb(var(--primary) / 0.9);
+}
+
+/* 文本按钮禁用态对齐 shadcn ghost 风格：去掉灰色底块，仅弱化文字 */
+.ant-btn.ant-btn-text:disabled {
+  background-color: transparent;
+  color: rgb(var(--foreground) / 0.35);
+}
+
+/* 单选按钮组（solid）选中态对齐 shadcn primary 语义：
+   antdv dark 算法会把显式主色派生成灰底白字（#d8d8d8/#fff），几乎不可读 */
+.ant-radio-button-wrapper.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background-color: rgb(var(--primary));
+  border-color: rgb(var(--primary));
+  color: rgb(var(--primary-foreground));
+  box-shadow: none;
+}
+
+.ant-radio-button-wrapper.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child,
+.ant-radio-button-wrapper.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  background-color: rgb(var(--primary) / 0.9);
+  border-color: rgb(var(--primary));
+  color: rgb(var(--primary-foreground));
+}
+
+/* 选中项与相邻项的分隔线随前景色弱化 */
+.ant-radio-button-wrapper.ant-radio-button-wrapper-checked::before {
+  background-color: rgb(var(--primary-foreground) / 0.25);
+}
+
+/* Typography 复制图标对齐 muted-foreground，避免主题切换后的残留色 */
+.ant-typography-copy {
+  color: rgb(var(--muted-foreground));
+}
+
+.ant-typography-copy:hover {
+  color: rgb(var(--foreground));
+}
