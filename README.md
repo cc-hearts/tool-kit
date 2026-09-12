@@ -93,7 +93,7 @@ pnpm preview
 ```text
 tool-kit/
 ├── app/
-│   ├── app.vue                    # Root component: AConfigProvider (theme & locale) + layout outlet
+│   ├── app.vue                    # Root component: AConfigProvider (theme & locale) + AApp (feedback context) + layout outlet
 │   ├── error.vue                  # Global error page (404 / 500)
 │   ├── layouts/
 │   │   └── default.vue            # Base layout: Header + page container + Footer
@@ -116,7 +116,7 @@ tool-kit/
 │   │       ├── index.ts           # Tool metadata definition via defineTool({...})
 │   │       └── XxxTool.vue        # Tool view component (lazily loaded via dynamic import())
 │   ├── composables/
-│   │   └── useTheme.ts            # Theme state management (Cookie persistence + antd tokens)
+│   │   └── useTheme.ts            # Theme state management (Cookie persistence + antdv-next design tokens)
 │   ├── utils/                     # Utility helper functions (Auto-imported by Nuxt)
 │   └── assets/css/main.css        # Global design tokens and style overrides
 ├── server/
@@ -139,7 +139,11 @@ Create a new directory `app/tools/<slug>/` and implement your component (e.g. `a
 ```vue
 <!-- app/tools/my-tool/MyTool.vue -->
 <script setup lang="ts">
-import { message } from 'antdv-next'
+import { App } from 'antdv-next'
+
+// App.useApp() returns a feedback instance bound to the ConfigProvider theme / locale
+// (the static `message` export does not inherit the theme)
+const { message } = App.useApp()
 
 const text = ref('')
 function handleAction() {

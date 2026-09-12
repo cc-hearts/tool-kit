@@ -54,7 +54,7 @@ export interface PasswordOptions {
 /** 生成强密码：从每个已选字符集至少取一个，其余随机填充后整体洗牌 */
 export async function generatePassword(options: PasswordOptions) {
   const groups = options.charsets.map((key) => {
-    let set = CHARSET[key]
+    let set: string = CHARSET[key]
     if (options.excludeAmbiguous)
       set = set.replace(AMBIGUOUS, '')
     return set
@@ -71,7 +71,9 @@ export async function generatePassword(options: PasswordOptions) {
   // Fisher–Yates 洗牌，避免「每组必有一个」造成的位置规律
   for (let i = chars.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[chars[i], chars[j]] = [chars[j], chars[i]]
+    const current = chars[i]!
+    chars[i] = chars[j]!
+    chars[j] = current
   }
   return chars.join('')
 }
@@ -82,8 +84,8 @@ export function generateUUID() {
     return window.crypto.randomUUID()
 
   const bytes = window.crypto.getRandomValues(new Uint8Array(16))
-  bytes[6] = (bytes[6] & 0x0f) | 0x40
-  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  bytes[6] = (bytes[6]! & 0x0f) | 0x40
+  bytes[8] = (bytes[8]! & 0x3f) | 0x80
   const hex = bytesToHex(bytes)
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }

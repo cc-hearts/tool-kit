@@ -40,7 +40,7 @@ useHead({ title: '工具市场 · Tool Kit' })
 </script>
 
 <template>
-  <div class="page-container mx-auto flex w-full max-w-1200px flex-1 gap-8 py-8">
+  <div class="page-container flex flex-1 gap-8 py-8">
     <aside class="w-52 shrink-0 max-md:hidden">
       <div class="sticky top-20">
         <div class="mb-2 px-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">

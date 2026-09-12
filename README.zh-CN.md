@@ -93,7 +93,7 @@ pnpm preview
 ```text
 tool-kit/
 ├── app/
-│   ├── app.vue                    # 根组件：AConfigProvider（主题/中文国际化）+ 布局入口
+│   ├── app.vue                    # 根组件：AConfigProvider（主题/中文国际化）+ AApp（反馈上下文）+ 布局出口
 │   ├── error.vue                  # 全局错误缺省页（404 / 500）
 │   ├── layouts/
 │   │   └── default.vue            # 基础骨架：Header + 页面容器 + Footer
@@ -116,7 +116,7 @@ tool-kit/
 │   │       ├── index.ts           # defineTool({...}) 工具元信息配置
 │   │       └── XxxTool.vue        # 工具视图组件（采用 dynamic import() 懒加载）
 │   ├── composables/
-│   │   └── useTheme.ts            # 主题状态管理（Cookie 持久化 + antd 算法/Design Token）
+│   │   └── useTheme.ts            # 主题状态管理（Cookie 持久化 + antdv-next Design Token）
 │   ├── utils/                     # 通用工具函数（Nuxt 自动导入，如剪贴板复制）
 │   └── assets/css/main.css        # 全局设计令牌与样式兼容规则
 ├── server/
@@ -139,7 +139,10 @@ tool-kit/
 ```vue
 <!-- app/tools/my-tool/MyTool.vue -->
 <script setup lang="ts">
-import { message } from 'antdv-next'
+import { App } from 'antdv-next'
+
+// App.useApp() 返回带 ConfigProvider 主题 / 语言上下文的反馈实例（静态 message 不继承主题）
+const { message } = App.useApp()
 
 const text = ref('')
 function handleAction() {

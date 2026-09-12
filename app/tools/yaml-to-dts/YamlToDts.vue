@@ -3,7 +3,10 @@
 import generateTypeDeclaration from '@cc-heart/object-to-declare'
 import { parse } from 'yaml'
 import { Copy, Download } from 'lucide-vue-next'
+import { App } from 'antdv-next'
 import { copyText } from '~/utils/clipboard'
+
+const { message } = App.useApp()
 
 const source = ref('')
 // 留空时使用库默认根名 IRootName
@@ -22,6 +25,13 @@ const parseResult = computed<{ dts: string, error: string }>(() => {
     return { dts: '', error: 'YAML 解析失败，请检查内容格式' }
   }
 })
+
+async function copyOutput() {
+  if (await copyText(parseResult.value.dts))
+    message.success('已复制到剪贴板')
+  else
+    message.error('复制失败，请检查浏览器剪贴板权限')
+}
 
 function downloadOutput() {
   if (!parseResult.value.dts)
@@ -58,7 +68,7 @@ function downloadOutput() {
       <a-card size="small" title="TypeScript 类型声明" class="h-full">
         <template #extra>
           <a-space>
-            <a-button size="small" type="text" :disabled="!parseResult.dts" @click="copyText(parseResult.dts)">
+            <a-button size="small" type="text" :disabled="!parseResult.dts" @click="copyOutput">
               <template #icon>
                 <Copy :size="14" />
               </template>

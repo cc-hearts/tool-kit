@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { js2xml, xml2json } from 'xml-js'
 import { Copy, Download, Upload } from 'lucide-vue-next'
-import type { UploadProps } from 'antdv-next'
+import { App, type UploadProps } from 'antdv-next'
 import { copyText } from '~/utils/clipboard'
+
+const { message } = App.useApp()
 
 const source = ref('')
 const isDragging = ref(false)
@@ -20,7 +22,7 @@ function transformNode(node: any) {
     node.elements = node.elements.filter(
       (target: any) => target.type !== 'comment' && !['title', 'script'].includes(target.name),
     )
-    node.elements.forEach(target => transformNode(target))
+    node.elements.forEach((target: any) => transformNode(target))
   }
 
   if (node.type !== 'element')
@@ -78,6 +80,13 @@ const previewNode = computed(() => {
   }
   return js2xml(wrapped)
 })
+
+async function copyOutput() {
+  if (await copyText(parseResult.value.output))
+    message.success('已复制到剪贴板')
+  else
+    message.error('复制失败，请检查浏览器剪贴板权限')
+}
 
 function downloadOutput() {
   if (!parseResult.value.output)
@@ -165,7 +174,7 @@ function onDragOver() {
     <a-card size="small" title="格式化结果">
       <template #extra>
         <a-space>
-          <a-button size="small" type="text" :disabled="!parseResult.output" @click="copyText(parseResult.output)">
+          <a-button size="small" type="text" :disabled="!parseResult.output" @click="copyOutput">
             <template #icon>
               <Copy :size="14" />
             </template>

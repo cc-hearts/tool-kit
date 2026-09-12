@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { Area } from '@antdv-next/vue-easy-crop'
 import Cropper from '@antdv-next/vue-easy-crop'
-import { message } from 'antdv-next'
+import { App } from 'antdv-next'
 import { RefreshCw, Upload } from 'lucide-vue-next'
+
+const { message } = App.useApp()
 
 type OutputFormat = 'png' | 'jpeg' | 'webp'
 

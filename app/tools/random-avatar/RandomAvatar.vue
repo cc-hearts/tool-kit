@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { message } from 'antdv-next'
+import { App } from 'antdv-next'
 import { Download, RefreshCw } from 'lucide-vue-next'
 import {
   bgColors,
@@ -19,6 +19,8 @@ import {
   type AvatarColors,
   type AvatarPart,
 } from './parts'
+
+const { message } = App.useApp()
 
 /** 可选部件的选择状态（键与部件库一一对应） */
 type PartKey = 'hair' | 'hairBack' | 'brows' | 'eyes' | 'nose' | 'mouth' | 'beard' | 'glasses' | 'blush' | 'clothes'

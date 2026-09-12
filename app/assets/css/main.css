@@ -1,6 +1,8 @@
 /* shadcn 风格语义化设计令牌（zinc 中性色系，RGB 三元组），
-   UnoCSS 与 antdv 主题均对齐到这里，亮暗双模式通过 .dark 切换 */
+   UnoCSS 与 antdv-next 主题均对齐到这里，亮暗双模式通过 .dark 切换 */
 :root {
+  /* 让原生控件（滚动条 / 表单）跟随亮暗主题 */
+  color-scheme: light;
   --background: 255 255 255;
   --foreground: 9 9 11;
   --card: 255 255 255;
@@ -17,6 +19,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: 9 9 11;
   --foreground: 250 250 250;
   --card: 16 16 18;

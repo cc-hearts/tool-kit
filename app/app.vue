@@ -17,8 +17,12 @@ useHead({
 
 <template>
   <a-config-provider :locale="zhCN" :theme="themeConfig">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+    <!-- a-app 在 ConfigProvider 内部挂载 message / notification / modal 容器，
+         工具组件统一通过 App.useApp() 取用，反馈弹层才能继承主题与语言 -->
+    <a-app>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </a-app>
   </a-config-provider>
 </template>

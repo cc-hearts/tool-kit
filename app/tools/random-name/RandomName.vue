@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { message } from 'antdv-next'
+import { App } from 'antdv-next'
 import { Copy, RefreshCw } from 'lucide-vue-next'
 import { copyText } from '~/utils/clipboard'
 import {
@@ -11,6 +11,8 @@ import {
   type EnglishFormat,
   type EnglishSeries,
 } from './names'
+
+const { message } = App.useApp()
 
 const activeTab = ref<'chinese' | 'english'>('chinese')
 
@@ -42,13 +44,17 @@ onMounted(regenerate)
 /* ---------- 复制 ---------- */
 
 async function copyName(name: string) {
-  await copyText(name)
-  message.success(`已复制「${name}」`)
+  if (await copyText(name))
+    message.success(`已复制「${name}」`)
+  else
+    message.error('复制失败，请检查浏览器剪贴板权限')
 }
 
 async function copyAll() {
-  await copyText(results.value.join('\n'))
-  message.success(`已复制全部 ${results.value.length} 条`)
+  if (await copyText(results.value.join('\n')))
+    message.success(`已复制全部 ${results.value.length} 条`)
+  else
+    message.error('复制失败，请检查浏览器剪贴板权限')
 }
 </script>
 

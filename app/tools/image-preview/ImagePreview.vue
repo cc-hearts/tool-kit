@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { message } from 'antdv-next'
+import { App } from 'antdv-next'
 import { ExternalLink, Images, Link2, Trash2, Upload } from 'lucide-vue-next'
+
+const { message } = App.useApp()
 
 type Mode = 'single' | 'multi'
 
