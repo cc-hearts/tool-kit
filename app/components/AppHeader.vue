@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Moon, Sun, Wrench } from 'lucide-vue-next'
+import { Moon, Sun } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
@@ -22,7 +22,7 @@ watch(keyword, (value) => {
     <div class="page-container mx-auto flex h-14 max-w-1200px items-center gap-3">
       <NuxtLink to="/" class="flex shrink-0 items-center gap-2 font-semibold tracking-tight">
         <span class="icon-box size-8">
-          <Wrench :size="16" />
+          <AppLogo :size="18" />
         </span>
         <span class="text-base">Tool Kit</span>
       </NuxtLink>
