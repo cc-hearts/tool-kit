@@ -1,14 +1,31 @@
 <p align="center">
-  <h1 align="center">Tool Kit · 开发者工具市场</h1>
+  <a href="https://github.com/cc-hearts/tool-kit">
+    <img src="./public/logo.svg" width="96" height="96" alt="Tool Kit Logo" />
+  </a>
 </p>
+
+<h1 align="center">Tool Kit · 开发者工具市场</h1>
 
 <p align="center">
   集成常用开发工具的开源「工具市场」，覆盖数据转换、代码辅助、安全加密、图片处理等高频场景。
+  <br />
+  <strong>100% 浏览器本地运算 · 隐私优先 · 现代全栈 SSR</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/cc-hearts/tool-kit"><img src="https://img.shields.io/badge/Nuxt-4.x-00DC82?style=flat-square&logo=nuxtdotjs&logoColor=white" alt="Nuxt 4" /></a>
+  <a href="https://github.com/cc-hearts/tool-kit"><img src="https://img.shields.io/badge/Vue-3.5+-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue 3.5+" /></a>
+  <a href="https://github.com/cc-hearts/tool-kit"><img src="https://img.shields.io/badge/Antdv_Next-1.5+-1677FF?style=flat-square&logo=antdesign&logoColor=white" alt="Antdv Next" /></a>
+  <a href="https://github.com/cc-hearts/tool-kit"><img src="https://img.shields.io/badge/UnoCSS-preset--wind3-333333?style=flat-square&logo=unocss&logoColor=white" alt="UnoCSS" /></a>
+  <a href="https://github.com/cc-hearts/tool-kit"><img src="https://img.shields.io/badge/TypeScript-Strict-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License" /></a>
+  <a href="https://github.com/cc-hearts/tool-kit/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" /></a>
 </p>
 
 <p align="center">
   <a href="./README.md">English</a> · <b>简体中文</b>
 </p>
+
 
 ---
 

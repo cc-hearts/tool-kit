@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="tk-brand-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    <linearGradient id="tk-border" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.22)"/>
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.05)"/>
+    </linearGradient>
+    <radialGradient id="tk-center-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.1)"/>
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect x="6" y="6" width="116" height="116" rx="30" fill="url(#tk-brand-bg)" stroke="url(#tk-border)" stroke-width="1.5"/>
+  <circle cx="64" cy="64" r="44" fill="url(#tk-center-glow)"/>
+
+  <!-- Core Mark: Precision Cutout Slash + Hub -->
+  <g stroke="#fafafa" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 30 98 L 46 82" stroke-width="10"/>
+    <path d="M 82 46 L 98 30" stroke-width="10"/>
+  </g>
+  <circle cx="64" cy="64" r="13" fill="#fafafa"/>
+</svg>
