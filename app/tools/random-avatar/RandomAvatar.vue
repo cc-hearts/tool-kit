@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
+import { message } from 'antdv-next'
 import { Download, RefreshCw } from 'lucide-vue-next'
 import {
   bgColors,

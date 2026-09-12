@@ -1,11 +1,12 @@
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
-import Components from 'unplugin-vue-components/vite'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-12',
 
-  modules: ['@unocss/nuxt'],
+  modules: ['@unocss/nuxt', '@antdv-next/nuxt'],
+
+  antd: {
+    icon: true,
+  },
 
   css: ['@unocss/reset/tailwind.css', '~/assets/css/main.css'],
 
@@ -28,16 +29,6 @@ export default defineNuxtConfig({
 
   // 组件目录仅作分组，不追加目录前缀（components/market/ToolCard.vue 仍以 <ToolCard> 使用）
   components: [{ path: '~/components', pathPrefix: false }],
-
-  vite: {
-    plugins: [
-      // antdv 按需引入（v4 使用 cssinjs，无需引入样式文件）
-      Components({
-        resolvers: [AntDesignVueResolver({ importStyle: false, resolveIcons: false })],
-        dts: 'types/components.d.ts',
-      }),
-    ],
-  },
 
   nitro: {
     externals: {

@@ -40,6 +40,44 @@
   display: inline-block;
 }
 
+/* antdv-next 下 InputSearch 采用 SpaceCompact（弹性盒）组合输入框与搜索按钮。
+   UnoCSS reset 的 block/border/background 规则会破坏其布局与主题色，
+   此处确保内部输入框占据剩余空间、搜索按钮对齐设计系统语义令牌 */
+.ant-input-search {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.ant-input-search .ant-input-affix-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+.ant-input-search .ant-input-search-btn.ant-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(var(--border));
+  background-color: rgb(var(--muted));
+  color: rgb(var(--muted-foreground));
+  transition: all 0.2s;
+}
+
+.ant-input-search .ant-input-search-btn.ant-btn:not(:disabled):hover {
+  background-color: rgb(var(--accent));
+  color: rgb(var(--foreground));
+  border-color: rgb(var(--border));
+}
+
+.ant-input-search .ant-input-search-btn .anticon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
 /* 主按钮对齐 shadcn primary 语义（antdv 基础 .ant-btn 透明背景在同优先级下可能压过 primary 变体，
    双类名提高优先级，颜色统一走主题变量） */
 .ant-btn.ant-btn-primary:not(:disabled) {

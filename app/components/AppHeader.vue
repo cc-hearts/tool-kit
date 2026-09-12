@@ -31,7 +31,7 @@ watch(keyword, (value) => {
 
       <a-input-search
         v-model:value="keyword"
-        class="hidden w-64 sm:block"
+        class="hidden w-64 sm:flex"
         placeholder="搜索工具..."
         allow-clear
       />
