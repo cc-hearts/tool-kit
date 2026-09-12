@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light" data-page-node-id="tC1VLS2gsA2W3KAUYaUa1h">
+<head data-page-node-id="ijMICYSGIAHWVtp8RnBXxJ">
+<meta charset="utf-8" data-page-node-id="8XLYkOVoBirDUcT6UsA7XI">
+<meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="FZoBUxv2mjamuvQxRX50cE">
+<title>纸墨朱砂 · 设计复刻 Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" data-page-node-id="OV3BsFhJziYdmBUBx0WiZt">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin data-page-node-id="6OcRsXZ16henasSMG10XVI">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500..900&family=Inter:wght@400..700&display=swap" rel="stylesheet" data-page-node-id="V0ybOxzAsnCOkVauoL3yY0">
+<style>
+/* ════════════════════════════════════════════════════════════
+   纸墨朱砂 · warm paper + modern cards
+   设计复刻 Demo — 逆向自 awesome-dsh-plugin.com
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 1. 设计令牌 Design Tokens ────────────────────────────── */
+:root{
+  /* 纸 — 暖白底，不用纯白 */
+  --paper:#f6f2ea; --paper-2:#efe9dd; --card:#fffdf8;
+  --line:#e0d8c8; --line-2:#cfc5b0;
+  /* 墨 — 暖黑，不用纯黑 */
+  --ink:#2b2620; --ink-2:#5f574a; --ink-3:#8b8172;
+  /* 朱砂 — 唯一强调色，克制使用 */
+  --cinnabar:#c0392b; --cinnabar-deep:#a12f22;
+  --cinnabar-soft:#f7e5e2; --cinnabar-border:#e5c4be;
+  --on-cinnabar:#ffffff;
+
+  --sans:"Inter","SF Pro Text","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --display:"Archivo","Inter","PingFang SC","Noto Sans SC",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,monospace;
+
+  /* 方格纸底纹 */
+  --grid:28px;
+}
+
+/* 深色模式：同一套语义令牌，换值不换名 */
+html[data-theme="dark"]{
+  --paper:#211d18; --paper-2:#282218; --card:#2a2620;
+  --line:#3b352c; --line-2:#4c4436;
+  --ink:#ece7de; --ink-2:#b5ac9e; --ink-3:#8f8678;
+  --cinnabar:#e06a52; --cinnabar-deep:#ea8069;
+  --cinnabar-soft:rgba(224,106,82,.13); --cinnabar-border:rgba(224,106,82,.35);
+  --on-cinnabar:#211d18;
+}
+
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans); background:var(--paper); color:var(--ink);
+  min-height:100vh; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;touch-action:manipulation}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-family:inherit;cursor:pointer}
+code{font-family:var(--mono);font-size:.9em}
+::selection{background:var(--cinnabar-soft);color:var(--ink)}
+:focus-visible{outline:2px solid var(--cinnabar);outline-offset:2px}
+
+.wrap{max-width:72rem;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem)}
+
+/* ── 2. 顶部导航 sticky + 毛玻璃 ──────────────────────────── */
+nav.top{
+  position:sticky; top:0; z-index:40;
+  background:color-mix(in srgb,var(--paper) 90%,transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{display:flex;align-items:center;gap:1.4rem;height:3.6rem}
+.logo{display:flex;align-items:center;gap:.55rem;font-family:var(--display);font-weight:700;font-size:.95rem;letter-spacing:-.01em}
+.logo svg{flex:none}
+.logo svg g{fill:var(--ink)}
+.logo svg .plug-block{fill:var(--cinnabar)}
+.nav-links{display:flex;gap:1.2rem;margin-left:auto;font-size:.86rem;color:var(--ink-2);align-items:center;flex-wrap:wrap}
+.nav-links a{transition:color .15s ease}
+.nav-links a:hover{color:var(--cinnabar)}
+.lang-btn{font-size:.82rem;color:var(--ink-3);border:1px solid var(--line);border-radius:8px;padding:.25rem .6rem;transition:all .15s ease}
+.lang-btn:hover{color:var(--ink);border-color:var(--line-2)}
+
+/* ── 3. Hero · 方格纸底纹 ─────────────────────────────────── */
+header.hero{
+  background-image:
+    linear-gradient(var(--paper-2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--paper-2) 1px,transparent 1px);
+  background-size:var(--grid) var(--grid);
+  border-bottom:1px solid var(--line);
+}
+.hero-in{
+  padding-block:clamp(2.4rem,6vh,4.2rem) 0;
+  display:flex;align-items:center;gap:clamp(1.4rem,4vw,3rem);flex-wrap:wrap;
+}
+.mark{flex:none;width:clamp(72px,9vw,104px);height:auto}
+.mark g{fill:var(--ink)}
+.mark .plug-block{
+  fill:var(--cinnabar); transform-box:fill-box; transform-origin:center;
+  transform:rotate(9deg); animation:snap-in .9s cubic-bezier(.22,1,.36,1) .3s both;
+}
+@keyframes snap-in{
+  from{transform:translate(46px,-46px) rotate(0deg);opacity:0}
+  60%{opacity:1}
+  to{transform:translate(0,0) rotate(9deg)}
+}
+h1{
+  font-family:var(--display); font-size:clamp(1.7rem,3.9vw,2.7rem);
+  font-weight:800; letter-spacing:-.03em; line-height:1.12; text-wrap:balance;
+}
+h1 em{font-style:normal;color:var(--cinnabar)}
+.tagline{margin-top:.6rem;color:var(--ink-2);max-width:40rem;text-wrap:pretty}
+.tagline b{color:var(--ink)}
+.count-line{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin-top:.5rem}
+.count-line a{color:var(--cinnabar)}
+.count-line a:hover{color:var(--cinnabar-deep)}
+
+.searchband{padding-block:1.6rem 2rem;display:flex;flex-direction:column;gap:1.1rem}
+
+/* 搜索框：硬投影 + 聚焦时投影变朱砂 */
+.searchbar{
+  display:flex;align-items:center;gap:.7rem;max-width:38rem;
+  background:var(--card); border:1.5px solid var(--ink); border-radius:12px;
+  padding:.78rem 1.05rem;
+  box-shadow:3px 3px 0 var(--line-2);
+  transition:box-shadow .15s ease;
+}
+.searchbar:focus-within{box-shadow:3px 3px 0 var(--cinnabar)}
+.searchbar svg{color:var(--ink-3);flex:none}
+.searchbar input{flex:1;border:none;outline:none;font:inherit;background:none;color:var(--ink);min-width:0;caret-color:var(--cinnabar)}
+.searchbar input::placeholder{color:var(--ink-3)}
+.searchbar .count{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* 推广条：朱砂淡底 */
+.market{
+  max-width:38rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;
+  background:var(--cinnabar-soft); border:1px solid var(--cinnabar-border);
+  border-radius:12px; padding:.7rem 1rem; font-size:.88rem; color:var(--ink-2);
+}
+.market svg{color:var(--cinnabar);flex:none}
+.market .lead b{color:var(--cinnabar-deep)}
+.market .go{
+  margin-left:auto;flex:none;font-weight:600;font-size:.82rem;
+  color:var(--on-cinnabar);background:var(--cinnabar);border:none;border-radius:8px;
+  padding:.42rem .9rem;transition:background .15s ease;white-space:nowrap;
+  min-width:7rem;text-align:center;
+}
+.market .go:hover{background:var(--cinnabar-deep)}
+
+/* ── 4. 筛选 chips ────────────────────────────────────────── */
+.filters-band{padding-block:1.5rem 0}
+.filters{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{
+  font-size:.83rem;color:var(--ink-2);background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:.34rem .9rem;
+  transition:all .15s ease;white-space:nowrap;
+}
+.chip small{color:var(--ink-3);font-size:.72rem;margin-left:.15rem}
+.chip:hover{border-color:var(--ink-3);color:var(--ink)}
+.chip.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chip.active small{color:color-mix(in srgb,var(--paper) 60%,transparent)}
+
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;margin-top:.6rem}
+.sortwrap{display:inline-flex;align-items:center;gap:.4rem;font-size:.83rem;color:var(--ink-3)}
+.sortwrap select{
+  font:inherit;font-size:.83rem;color:var(--ink-2);background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:.34rem 1.6rem .34rem .9rem;
+  appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+  cursor:pointer;transition:border-color .15s ease,color .15s ease;
+}
+.sortwrap select:hover{border-color:var(--ink-3);color:var(--ink)}
+.toggle{
+  font-size:.83rem;color:var(--ink-2);background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:.34rem .9rem;transition:all .15s ease;white-space:nowrap;
+}
+.toggle:hover{border-color:var(--ink-3);color:var(--ink)}
+.toggle[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* ── 5. 卡片网格 ──────────────────────────────────────────── */
+ol.dex{
+  list-style:none;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:1.05rem;
+  padding-block:1.7rem 2.5rem;
+}
+li.card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:1.2rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+  position:relative;
+}
+li.card:hover{
+  border-color:var(--line-2);
+  box-shadow:0 3px 5px rgb(43 38 32 / .05),0 14px 34px rgb(43 38 32 / .08);
+  transform:translateY(-2px);
+}
+li.card:has(.inst[open]){z-index:30}
+li.card .top{display:flex;align-items:baseline;gap:.5rem;min-width:0}
+li.card h3{font-size:.98rem;font-weight:680;letter-spacing:-.01em;overflow-wrap:anywhere;line-height:1.35}
+li.card h3 a{transition:color .15s ease}
+li.card h3 a:hover{color:var(--cinnabar-deep)}
+li.card h3 .owner{color:var(--ink-3);font-weight:450}
+li.card .stars{margin-left:auto;flex:none;font-family:var(--mono);font-size:.76rem;color:var(--ink-2)}
+li.card .stars::before{content:"★ ";color:var(--cinnabar)}
+li.card .dl{flex:none;font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
+li.card .dl::before{content:"↓ ";color:var(--ink-3)}
+li.card .desc-link{display:block}
+li.card p{
+  font-size:.86rem;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:3;
+  -webkit-box-orient:vertical;overflow:hidden;min-height:2.6em;transition:color .15s ease;
+}
+li.card .desc-link:hover p{color:var(--ink)}
+li.card .foot{display:flex;align-items:center;margin-top:auto;padding-top:.45rem;gap:.6rem}
+li.card .tag{
+  font-size:.72rem;color:var(--ink-3);background:var(--paper);border:1px solid var(--line);
+  border-radius:6px;padding:.15rem .55rem;transition:all .15s ease;
+}
+li.card .tag:hover{color:var(--ink);border-color:var(--line-2)}
+li.hidden{display:none}
+.noresult{padding-block:3rem;color:var(--ink-3);text-align:center;display:none}
+
+/* ── 6. 安装下拉 ──────────────────────────────────────────── */
+.inst{position:relative;margin-left:auto}
+.inst summary{
+  list-style:none;font-size:.8rem;font-weight:600;color:var(--cinnabar);
+  border:1.5px solid var(--cinnabar);border-radius:8px;padding:.3rem .8rem;
+  cursor:pointer;user-select:none;white-space:nowrap;transition:all .15s ease;
+}
+.inst summary::-webkit-details-marker{display:none}
+.inst summary:hover,.inst[open] summary{background:var(--cinnabar);color:var(--on-cinnabar)}
+.inst .menu{
+  position:absolute;right:0;top:calc(100% + 6px);z-index:20;
+  min-width:21rem;max-width:min(24rem,86vw);
+  background:var(--card);border:1px solid var(--line-2);border-radius:12px;
+  box-shadow:0 6px 24px rgb(43 38 32 / .14);overflow:hidden;
+}
+.inst .menu>button{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  padding:.6rem .85rem;border-bottom:1px solid var(--line);transition:background-color .16s ease;
+}
+.inst .menu>button:hover{background:var(--cinnabar-soft)}
+.inst .menu b{display:block;font-size:.8rem;font-weight:650;color:var(--ink)}
+.inst .menu small{display:block;font-size:.7rem;color:var(--ink-3);margin-top:.1rem}
+.inst .menu button.done b{color:var(--cinnabar-deep)}
+.mi-cli{padding:.6rem .85rem}
+.mi-cli b{display:block;font-size:.8rem;font-weight:650;color:var(--ink)}
+.cli{display:flex;align-items:stretch;margin-top:.45rem;border:1px solid var(--line-2);border-radius:8px;overflow:hidden;width:100%}
+.cli input{flex:1;min-width:0;width:100%;font-family:var(--mono);font-size:.7rem;color:var(--ink);background:var(--paper);border:none;outline:none;padding:.42rem .6rem}
+.cli .copy{
+  margin:0;border:none;border-left:1px solid var(--line-2);flex:none;
+  display:flex;align-items:center;font-family:var(--mono);font-size:.68rem;
+  color:var(--ink-3);background:var(--card);padding:0 .8rem;white-space:nowrap;
+  min-width:5.5rem;justify-content:center;transition:all .15s ease;
+}
+.cli .copy:hover,.cli .copy.done{color:var(--on-cinnabar);background:var(--cinnabar)}
+
+/* ── 7. 信息面板 ──────────────────────────────────────────── */
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:1.05rem;padding-block:0 2.5rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem}
+.panel h2{font-family:var(--display);font-size:1rem;font-weight:700;letter-spacing:-.01em;margin-bottom:.6rem}
+.panel pre{
+  font-family:var(--mono);font-size:.78rem;line-height:1.9;color:var(--ink);
+  background:var(--paper);border:1px solid var(--line);border-radius:8px;
+  padding:.8rem 1rem;overflow-x:auto;margin-block:.5rem;
+}
+.panel pre .c{color:var(--ink-3)}
+.panel p{font-size:.85rem;color:var(--ink-2);text-wrap:pretty}
+.panel .note{margin-top:.5rem;font-size:.78rem;color:var(--ink-3)}
+.panel a{color:var(--cinnabar)}
+.panel a:hover{color:var(--cinnabar-deep);text-decoration:underline;text-underline-offset:3px}
+
+/* ── 8. 页脚 + 回到顶部 ───────────────────────────────────── */
+footer{border-top:1px solid var(--line);padding-block:1.8rem 2.8rem;color:var(--ink-3);font-size:.8rem}
+footer .frow{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem 1.5rem}
+footer a{color:var(--ink-2)}
+footer a:hover{color:var(--cinnabar)}
+footer .motto{font-family:var(--mono);color:var(--cinnabar)}
+#toTop{
+  position:fixed;right:clamp(.8rem,2vw,1.6rem);bottom:clamp(.8rem,2vw,1.6rem);z-index:30;
+  width:2.75rem;height:2.75rem;display:grid;place-items:center;border-radius:10px;
+  font-family:var(--mono);font-size:1rem;color:var(--ink-2);
+  background:var(--card);border:1px solid var(--line-2);
+  box-shadow:0 2px 8px rgb(43 38 32 / .1);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s ease,color .16s ease,border-color .16s ease,background-color .16s ease;
+}
+#toTop.show{opacity:1;pointer-events:auto}
+#toTop:hover{color:var(--on-cinnabar);border-color:var(--cinnabar);background:var(--cinnabar)}
+
+/* ── 9. Demo 专用：主题切换 + 说明条 ──────────────────────── */
+.theme-btn{
+  font-size:.82rem;color:var(--ink-3);border:1px solid var(--line);border-radius:8px;
+  background:none;padding:.25rem .6rem;transition:all .15s ease;line-height:1.4;
+}
+.theme-btn:hover{color:var(--cinnabar);border-color:var(--cinnabar-border)}
+.demo-note{
+  font-family:var(--mono);font-size:.72rem;color:var(--ink-3);
+  border-top:1px dashed var(--line);padding-block:.7rem;margin-bottom:1.2rem;
+}
+
+@media (max-width:760px){ .panels{grid-template-columns:1fr} }
+@media (max-width:640px){
+  .nav-links{gap:.9rem;font-size:.82rem}
+  .market .go{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .mark .plug-block{animation:none}
+  li.card:hover{transform:none}
+}
+</style>
+</head>
+<body data-page-node-id="g2vFZCHP0x7HRty5MubX4Z">
+
+<!-- ══ 顶部导航 ══ -->
+<nav class="top" data-page-node-id="ZT1sss3aqxQrnE36E0AvaO">
+  <div class="wrap nav-in" data-page-node-id="l2gKbiIoyZbB4TiUaHDyQF">
+    <a class="logo" href="#" data-page-node-id="bAIAfmHaAeSyFbTdUcFD7K">
+      <svg width="20" height="20" viewBox="76 42 400 400" aria-hidden="true" data-page-node-id="KviutwLKf6YkNbefoHhmHV">
+        <g data-page-node-id="yosDEiI380Le6oYMDsAvKS">
+          <rect x="112" y="112" width="88" height="88" rx="14" data-page-node-id="x54FIA2tWXQRck9HtNcIkN"></rect>
+          <rect x="212" y="112" width="88" height="88" rx="14" data-page-node-id="9V13FqgrdWmKTGlAUtQ2GZ"></rect>
+          <rect x="112" y="212" width="88" height="88" rx="14" data-page-node-id="bxZJZm6cGCoDNVWwB2fIzf"></rect>
+          <rect x="212" y="212" width="88" height="88" rx="14" data-page-node-id="lztkm6TQpgfQrxSxQp1yZq"></rect>
+          <rect x="112" y="312" width="88" height="88" rx="14" data-page-node-id="ejm4gMXjsEBsymvFy2ACCB"></rect>
+          <rect x="212" y="312" width="88" height="88" rx="14" data-page-node-id="AXEZUMpZgyhYr7pHyQGB8B"></rect>
+          <rect x="312" y="212" width="88" height="88" rx="14" data-page-node-id="ZCpCFONx8sPiDeTPaU9Qh0"></rect>
+          <rect x="312" y="312" width="88" height="88" rx="14" data-page-node-id="9vEHEL6QBrXyEwMQqFJiWE"></rect>
+        </g>
+        <rect class="plug-block" x="346" y="78" width="88" height="88" rx="14" transform="rotate(9 390 122)" data-page-node-id="NNn6YhpGedYWcU0DhV1eur"></rect>
+      </svg>
+      tool-kit
+    </a>
+    <div class="nav-links" data-page-node-id="daCVsrzfld68Zr5wb2XkzV">
+      <a href="#" data-page-node-id="jJViXtHoSMaES1ZSjCceYb">工具集</a>
+      <a href="#" data-page-node-id="DHeO2LX2qgWUhCN0025CxE">文档 ↗</a>
+      <a href="#" data-page-node-id="CrBvnbViSgbiYoce7Tok9O">GitHub ↗</a>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅色" data-page-node-id="SAduuIsAwKGTI3ityIoIOZ">◐ 深色</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ Hero · 方格纸底纹 ══ -->
+<header class="hero" data-page-node-id="yv0AzZJWKkb6bGwHViAbk6">
+  <div class="wrap hero-in" data-page-node-id="1MM5vejW6zKbgpHnoTBZqg">
+    <svg class="mark" viewBox="76 42 400 400" aria-hidden="true" data-page-node-id="E9EB2mZdNsIIiXKJlD4GzX">
+      <g data-page-node-id="Hjgohj1HGuamXGeyVkYMsr">
+        <rect x="112" y="112" width="88" height="88" rx="14" data-page-node-id="p4Eauc2BTMofQILkSTPS9e"></rect>
+        <rect x="212" y="112" width="88" height="88" rx="14" data-page-node-id="WGPXz4RV7VNBpaOlPtJ5ZL"></rect>
+        <rect x="112" y="212" width="88" height="88" rx="14" data-page-node-id="t65tItoxm7JjhYzDFnyn4G"></rect>
+        <rect x="212" y="212" width="88" height="88" rx="14" data-page-node-id="P9zNAGYYZshVoKDagmvOzT"></rect>
+        <rect x="112" y="312" width="88" height="88" rx="14" data-page-node-id="DMtJboCjvepUHbgg2TpHpn"></rect>
+        <rect x="212" y="312" width="88" height="88" rx="14" data-page-node-id="9z1vRCajPDiI4awYHhAnOq"></rect>
+        <rect x="312" y="212" width="88" height="88" rx="14" data-page-node-id="asCL40MkQLpSC0bQ6M964n"></rect>
+        <rect x="312" y="312" width="88" height="88" rx="14" data-page-node-id="wjslMt59Os7u6he4eyjGab"></rect>
+      </g>
+      <rect class="plug-block" x="346" y="78" width="88" height="88" rx="14" data-page-node-id="E7QApn8v6KqbVG3qEaPurc"></rect>
+    </svg>
+    <div data-page-node-id="RJBoL7DBtzpcCrWi621NGO">
+      <h1 data-page-node-id="zy4xQoQJQFebaghbPTQFkB">Design <em data-page-node-id="9Fhe4WqhrlPmIWbsKs9BYB">Elements</em> Replica</h1>
+      <p class="tagline" data-page-node-id="JYB8UHgbLyiGTYgnDUdnKn">复刻自 <b data-page-node-id="Tb5YHkeAS4duuWWclzo8KX">awesome-dsh-plugin.com</b> 的「纸墨朱砂」设计语言：暖纸底、方格纸底纹、朱砂强调色与硬投影卡片。</p>
+      <p class="count-line" data-page-node-id="Ri0NwXKX186kKPpfkJVCrd">Listing <span id="total" data-page-node-id="Y9Qie6qqtVUlzcw79tKfNF">12</span> elements · <a href="#tokens" data-page-node-id="Y0iO7eZ3WoSAFsJZ7X5N66">查看设计令牌 ↗</a></p>
+    </div>
+  </div>
+
+  <div class="wrap searchband" data-page-node-id="ffcqyqBWukZMjCbAPuN0px">
+    <div class="searchbar" data-page-node-id="vyjDBSYdP93Ebp5zwqD3RU">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" data-page-node-id="ykeUCXw9msyeWKW4QS3WHK">
+        <circle cx="11" cy="11" r="7" data-page-node-id="pO7WrVByYQwcRUqgFe8DyZ"></circle><path d="m20 20-3.8-3.8" data-page-node-id="fnA3Ai3HvXiTF4n8eTcE1Q"></path>
+      </svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="搜索工具…" aria-label="搜索工具…" data-page-node-id="9fPSkAeWD5pHnLfGAtrMSf">
+      <span class="count" id="count" aria-live="polite" data-page-node-id="u5ko1SEJ9kMVUVp7A5MzOZ">12 / 12</span>
+    </div>
+    <div class="market" data-page-node-id="pt5lM8n0hgaFXwu2u0oZlY">
+      <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="beaQB9qwsAISZCGEq0hmrY">
+        <circle cx="9" cy="21" r="1.4" data-page-node-id="nioX9jO2oe75EPlwzVV3tS"></circle><circle cx="19" cy="21" r="1.4" data-page-node-id="PnHi7xAvWttTeBLpo69kOt"></circle>
+        <path d="M2.5 3h2l2.6 12.5a2 2 0 0 0 2 1.5h9.2a2 2 0 0 0 2-1.6L22 7H6" data-page-node-id="SHzZmFxniMPeXT19fKB7W6"></path>
+      </svg>
+      <span class="lead" data-page-node-id="K4H1rVudNn2BXGwL7zrUOp"><b data-page-node-id="ICKyjOrGw0fiOQEZi9rvIE">tool-kit</b> — 复刻演示：底纹、导航、Hero、卡片网格与交互</span>
+      <button class="go" type="button" data-cmd="pnpm add @cc-heart/tool-kit" data-page-node-id="DJhQdAgFSsromBDgwnyVjD">Get it</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ 筛选 chips ══ -->
+<div class="wrap filters-band" data-page-node-id="fcHNuZbS3Lfpad2S0uOKVT">
+  <div class="filters" id="filters" data-page-node-id="Xzw9GsTYhwyy8ci3XSZ6IU">
+    <button class="chip active" data-cat="all" data-page-node-id="Zj6pj3Lr3qA35Xz1HxGfOD">全部 <small data-page-node-id="JBolRExGJrphreIutacewN">12</small></button>
+    <button class="chip" data-cat="bg" data-page-node-id="7evOnXGHt8y1p2YH5Blqdm">背景底纹 <small data-page-node-id="Vo58aFEISDPxei4vll3G0x">3</small></button>
+    <button class="chip" data-cat="nav" data-page-node-id="EGNtVbJFPK1J8cFqlhcBZB">顶部导航 <small data-page-node-id="lRT7d4b3Od2EAcL28gjGPD">4</small></button>
+    <button class="chip" data-cat="card" data-page-node-id="6lthUnpMoNvFGbxlQeOOE6">卡片 <small data-page-node-id="8GWpH2OHdAJkLH37NbdpdP">3</small></button>
+    <button class="chip" data-cat="token" data-page-node-id="11Gu5FhF0VzB2hL8DL51Sg">设计令牌 <small data-page-node-id="UFE4E0k7fB6moZgiKIUDw0">2</small></button>
+  </div>
+  <div class="controls" data-page-node-id="vgHy655GiyhSNJekcSQ4Nm">
+    <span class="sortwrap" data-page-node-id="lDI4E5hc6JhhpmcMwyAySp">Sort
+      <select id="sort" data-page-node-id="oyF6plw7oi9vn8LGP0v5pH">
+        <option value="default" data-page-node-id="WsLXOxPLvxJbBbmqfJQoS4">默认</option>
+        <option value="name" data-page-node-id="ivLNitpC4OQ4WogYGgC63L">名称 A→Z</option>
+      </select>
+    </span>
+    <button class="toggle" id="toggleDark" aria-pressed="false" type="button" data-page-node-id="tWSI1t5mbFlW3kihOSYFCP">仅深色元素</button>
+    <button class="toggle" id="toggleAccent" aria-pressed="false" type="button" data-page-node-id="RywBhHbCZNpzq6wcBMxSgq">朱砂强调</button>
+  </div>
+</div>
+
+<!-- ══ 卡片网格 ══ -->
+<main class="wrap" data-page-node-id="CnQvd39PAPnL1TE6i3olNo">
+  <ol class="dex" id="dex" data-page-node-id="qwptw0FfM4FLg4HXyZDzzz">
+    <li class="card" data-cat="bg" data-name="grid-paper" data-page-node-id="d8tgFfzyfhndjv0inmD64h">
+      <div class="top" data-page-node-id="hECqEoAt3iac4cFHnExKSm"><h3 data-page-node-id="yaFfaSDoA0a8CbODYfpcsj"><a href="#" data-page-node-id="amlLt29cUNKCyDCDe0pkX4"><span class="owner" data-page-node-id="fap2kIC64DvwpmBIkvMETP">bg/</span>grid-paper</a></h3><span class="stars" data-page-node-id="qBsaDyBGMpFNppnJVfexXo">核心</span></div>
+      <a class="desc-link" href="#" data-page-node-id="STpobqeNS84AhwrdK3SE2p"><p data-page-node-id="OE2dBhY9h608PjKPCc4gEy">28px 方格纸底纹：两道 1px linear-gradient 叠加，线色取自 --paper-2，比背景深一档，只在 Hero 区出现。</p></a>
+      <div class="foot" data-page-node-id="wvRFMFBveVpIIuT0D233UY"><span class="tag" data-page-node-id="UH0FJEk4nNUdtI8q18fKY1">背景底纹</span>
+        <details class="inst" data-page-node-id="QR80qESCYho1Ip3jXVnGx6"><summary data-page-node-id="gXUkNUBVPhQYlVNftoZY4f">用法 ▾</summary>
+          <div class="menu" role="menu" data-page-node-id="4jQGSAED30bZzB6qHXWEi1">
+            <div class="mi-cli" data-page-node-id="50g34yJoWMyo0LCTeQFCie"><b data-page-node-id="CSXKBEzkNFpAxLZgAyUdRy">CSS</b>
+              <span class="cli" data-page-node-id="1fFV5hJOWs7ImSOTv0u0b7"><input readonly value="background-size:28px 28px" aria-label="复制" data-page-node-id="OGhs7xpSbANAk6hG8qTyme"><button class="copy" type="button" data-cmd="background-size:28px 28px" data-page-node-id="k8oAqDOAGd52MvZjGBrw1w">copy</button></span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </li>
+
+    <li class="card" data-cat="bg" data-name="warm-paper" data-page-node-id="eNZo7riwWHUlhsc2xLS02s">
+      <div class="top" data-page-node-id="rw12k4tCsnPlvR7iH7pDvJ"><h3 data-page-node-id="EwsDqbgIlyDR9z6RxpHt2l"><a href="#" data-page-node-id="qoDhm4LyiPEwPRJ6Cde4W7"><span class="owner" data-page-node-id="4aDfBebi0YcPKyCp659u6E">bg/</span>warm-paper</a></h3><span class="stars" data-page-node-id="OPp6Gvhydf4dURTKaR6VkU">核心</span></div>
+      <a class="desc-link" href="#" data-page-node-id="DPeEpCruuOfhLi8BUPdk2O"><p data-page-node-id="sEXBRcXIKODtkcp01WncTM">不用纯白 #fff，用暖白 #f6f2ea；深色不用纯黑，用暖黑 #211d18。整体偏纸感，降低屏幕冷光。</p></a>
+      <div class="foot" data-page-node-id="OQRHyF4G9ErHi3fAU7H1MA"><span class="tag" data-page-node-id="gyVRUV4AklL5CUMkGma71E">背景底纹</span></div>
+    </li>
+
+    <li class="card" data-cat="bg" data-name="cinnabar-accent" data-page-node-id="f3RhoCbL8piTZFEWojtjPh">
+      <div class="top" data-page-node-id="X7Ploo9GO3esKRtCAQi2Lx"><h3 data-page-node-id="GjY1hBzZQN5KoGwwWE7HjL"><a href="#" data-page-node-id="LfGsmuK5Iks0LoJmFZr57s"><span class="owner" data-page-node-id="X0Wvyu7ZlyqbM82UpHhysl">bg/</span>cinnabar-accent</a></h3><span class="stars" data-page-node-id="9MhxcSrzlbQeu3ejxpVzkS">核心</span></div>
+      <a class="desc-link" href="#" data-page-node-id="u996a9Tj3fFIL6p3hQIyIV"><p data-page-node-id="uT5lQ2sHKxCNDd8VDnZK9b">朱砂红 #c0392b 是唯一强调色：h1 里的 em、星标、聚焦投影、按钮。克制到全屏只有几处。</p></a>
+      <div class="foot" data-page-node-id="ugjrmKjLF329KcP0Wzpf0C"><span class="tag" data-page-node-id="V3RsSiFNJ9V0ZA1fpQgVLE">背景底纹</span></div>
+    </li>
+
+    <li class="card" data-cat="nav" data-name="sticky-glass" data-page-node-id="uVV4INmyAaY55J78p9Rp0u">
+      <div class="top" data-page-node-id="7aE1WhuxoOvSy33E7iEC9t"><h3 data-page-node-id="XiH2zFqFoF93VLA0tELUDh"><a href="#" data-page-node-id="DJxH7JYCOw7ibLfYf0Fcpr"><span class="owner" data-page-node-id="pmdFx2BtYwyeBmAc6WyvXp">nav/</span>sticky-glass</a></h3><span class="stars" data-page-node-id="85wIY7dQeFt9QWAWeAJP1g">顶部</span></div>
+      <a class="desc-link" href="#" data-page-node-id="YdueXkgHpEBg7mGxdftcWP"><p data-page-node-id="3oSCBKEDuciiOeLmVj2TgP">导航栏 sticky 吸附 + backdrop-filter:blur(10px) 毛玻璃，底色用 color-mix 把纸色降到 90% 透明。</p></a>
+      <div class="foot" data-page-node-id="S1ACX1uJmVRvxodvnGgJHo"><span class="tag" data-page-node-id="LZOJHCHYIY793Xqa3sRLyp">顶部导航</span>
+        <details class="inst" data-page-node-id="vSvsLBbHYHBfCpRKVt7sVu"><summary data-page-node-id="w75LkG1534afpu9WcBiWHY">用法 ▾</summary>
+          <div class="menu" role="menu" data-page-node-id="IveDBwHbZL2TuUiayNzlH2">
+            <div class="mi-cli" data-page-node-id="iV313hnRUKutoMcgGMxyPA"><b data-page-node-id="xSil4TdBDFOYAo4CSXu6nr">CSS</b>
+              <span class="cli" data-page-node-id="qiebc7BSnCniJArAlJqdFE"><input readonly value="backdrop-filter:blur(10px)" aria-label="复制" data-page-node-id="C8ZDarFcigq5b1Wi50F0oJ"><button class="copy" type="button" data-cmd="backdrop-filter:blur(10px)" data-page-node-id="6nQqTY8gazpspqpuFHpwO4">copy</button></span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </li>
+
+    <li class="card" data-cat="nav" data-name="pixel-logo" data-page-node-id="gtKXP7PJ63WVYlJRZWcFyO">
+      <div class="top" data-page-node-id="bp8CoeLb3WGrloVR6FhrUP"><h3 data-page-node-id="7KiyCjGNRY3tZXL5pNgL5w"><a href="#" data-page-node-id="wgzdBame9LbXd1LKtN2nEk"><span class="owner" data-page-node-id="gRX4apCpuAGLlyNyB1gkV1">nav/</span>pixel-logo</a></h3><span class="stars" data-page-node-id="PU9ZBVlbkvq4olnDkmzQWZ">顶部</span></div>
+      <a class="desc-link" href="#" data-page-node-id="za3ldCWmIVPGfIzcpDULqR"><p data-page-node-id="FzN6QCfl8iseFzeuzunE7Z">像素方块 logo：8 个圆角方块组成 L 形，加一块旋转 9° 的朱砂方块，进场时从右上「啪」地吸附到位。</p></a>
+      <div class="foot" data-page-node-id="DGpXzkCLIKw0hMHtwagU5Y"><span class="tag" data-page-node-id="kE3KHTs23gjlwNxbIUc9LR">顶部导航</span></div>
+    </li>
+
+    <li class="card" data-cat="nav" data-name="offset-shadow" data-page-node-id="hNPQX30ICYHIZQhCiPwbj8">
+      <div class="top" data-page-node-id="J091KxMhYqTntxneGRDQGk"><h3 data-page-node-id="nyCdOzdb6FKksv2BROn047"><a href="#" data-page-node-id="2mi1JSXrdicWiYuwDf1cPW"><span class="owner" data-page-node-id="vMFH8xGU086ADzoobPiDys">nav/</span>offset-shadow</a></h3><span class="stars" data-page-node-id="584za4TINcjrR2ehGVdwgg">顶部</span></div>
+      <a class="desc-link" href="#" data-page-node-id="LmlO6IyX3f5SRPg7ao9jCu"><p data-page-node-id="Z138j0jxrQZZeGRB8G3Ja2">搜索框用 3px 3px 0 的零模糊硬投影，聚焦时投影从纸灰变成朱砂红。轻微的复古印刷感。</p></a>
+      <div class="foot" data-page-node-id="Lq2nKhNNcC5be94BQPT6ef"><span class="tag" data-page-node-id="IGtrF70mnNoTiDYpcClJIl">顶部导航</span>
+        <details class="inst" data-page-node-id="ZbkD42IVvtPlDuAFX8D4XL"><summary data-page-node-id="pQrhBEeiqY02HnAyIzlAT7">用法 ▾</summary>
+          <div class="menu" role="menu" data-page-node-id="KQBiLsBH9v0ELgbntCeAmz">
+            <div class="mi-cli" data-page-node-id="3l5IZoOw1lugAy1d3sJWYU"><b data-page-node-id="AvlGLf4xiA9jQdpYdLTMX2">CSS</b>
+              <span class="cli" data-page-node-id="VEMT1eluAa9714rZCxyI1L"><input readonly value="box-shadow:3px 3px 0 var(--line-2)" aria-label="复制" data-page-node-id="1YldQrcXWsZYEmuHpU8p4b"><button class="copy" type="button" data-cmd="box-shadow:3px 3px 0 var(--line-2)" data-page-node-id="Gkn5JtYzFTT4hHGH1ZT0Se">copy</button></span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </li>
+
+    <li class="card" data-cat="nav" data-name="ink-border" data-page-node-id="TPRoMSsgDZG1sU2Fu7jByQ">
+      <div class="top" data-page-node-id="a4B0vDCKgkpNDybAWmS7BH"><h3 data-page-node-id="vERMokEa01Rb6ZAM8ggyon"><a href="#" data-page-node-id="pCYHT75vclzEqq2b72AsmG"><span class="owner" data-page-node-id="GBTiih1oAyGVfAICIJtcFI">nav/</span>ink-border</a></h3><span class="stars" data-page-node-id="hNIc0EDA8kFtbdg7sO4Cwo">顶部</span></div>
+      <a class="desc-link" href="#" data-page-node-id="2pvP1QeCQ1zYzb5qGCO9CR"><p data-page-node-id="Gvqkm0qMdjQtIyUTD5RQsZ">搜索框边框用 1.5px 实心墨色（而非灰），配合硬投影形成「描边 + 投影」的双层轮廓。</p></a>
+      <div class="foot" data-page-node-id="VvArpWwHflOctBA603pNGU"><span class="tag" data-page-node-id="QqUO5SmWFNslQmwDbgOgv0">顶部导航</span></div>
+    </li>
+
+    <li class="card" data-cat="card" data-name="hover-lift" data-page-node-id="0LkwRwbDGoUwFSwyQ3o3BJ">
+      <div class="top" data-page-node-id="EFlSP5GMwfzlaJchDEA8UA"><h3 data-page-node-id="9qn422prU9ot7BzAs66Utv"><a href="#" data-page-node-id="95mSROLoOZnAFWzPHDFwD4"><span class="owner" data-page-node-id="LMaD0HhpplIkI9aCqoH4mH">card/</span>hover-lift</a></h3><span class="stars" data-page-node-id="b332RP43i6MpQBtdQM2Wf3">卡片</span></div>
+      <a class="desc-link" href="#" data-page-node-id="w6saErETozSgiwjVuDOKqA"><p data-page-node-id="F3rpC8XySYRptdJtoCcRlo">卡片 hover 上浮 2px，阴影从无到双层（近处 5% + 远处 8%），圆角 14px，边框从 --line 过渡到 --line-2。</p></a>
+      <div class="foot" data-page-node-id="LyIB4JcGIcyDoFVF6n4dcw"><span class="tag" data-page-node-id="8klkrPCaPg53pvIMGCgq4O">卡片</span></div>
+    </li>
+
+    <li class="card" data-cat="card" data-name="pill-chip" data-page-node-id="JdGoxwxiNsPx94GnwHir9H">
+      <div class="top" data-page-node-id="VsFgL440uleWSnAp5yOcC8"><h3 data-page-node-id="Jkq0TReTmvFpA5Q09kMB74"><a href="#" data-page-node-id="zLqfbFxgcslJSUZ7BvPPqw"><span class="owner" data-page-node-id="EJAoecF3y9zBur3LRtKpuK">card/</span>pill-chip</a></h3><span class="stars" data-page-node-id="mNBCbq9zbtVCTo0C1jnm4e">卡片</span></div>
+      <a class="desc-link" href="#" data-page-node-id="tgvAXbmtZSJnm31RzFMUDK"><p data-page-node-id="yXfC8qwW4JeLxGkHHGnVbT">筛选 chip 全圆角 999px，选中态直接反色：墨色底 + 纸色字，不用朱砂，避免强调色泛滥。</p></a>
+      <div class="foot" data-page-node-id="loGMNZihD5DL7oBGMEl7Xa"><span class="tag" data-page-node-id="jiARVGhw9ML91k9frt3L2T">卡片</span></div>
+    </li>
+
+    <li class="card" data-cat="card" data-name="mono-metrics" data-page-node-id="lNeyfjmFY7g447ezOVxT4E">
+      <div class="top" data-page-node-id="LF7rbn7mIFBJMwm6O2ncZy"><h3 data-page-node-id="BMQDR5OfwiMnBZ7yyHUccS"><a href="#" data-page-node-id="ZfEbNoMj0OBqw6R9PspwnN"><span class="owner" data-page-node-id="AmQSx1CYZEU3HkyHm0m525">card/</span>mono-metrics</a></h3><span class="stars" data-page-node-id="rwsoIuMkALAdqpfG1sJ8Cz">卡片</span></div>
+      <a class="desc-link" href="#" data-page-node-id="BRVmUIEFxN6s2pZNGX2tcb"><p data-page-node-id="Bf0szSaJ7FFlrWaCi5z4YY">星标、下载量、计数等数字统一用等宽字体 + tabular-nums，保证数字对齐不跳动。</p></a>
+      <div class="foot" data-page-node-id="YXf6C0G66EeAc94paFSDA6"><span class="tag" data-page-node-id="GZtI4IuHuW1wEOnXYVOqy8">卡片</span></div>
+    </li>
+
+    <li class="card" data-cat="token" data-name="semantic-tokens" data-page-node-id="Orngsw1TDEPFPd8bpEYSEi">
+      <div class="top" data-page-node-id="HDQA7PfyTmwVJtVjUBOXsP"><h3 data-page-node-id="PZ5YoQvWRyS7vl03Rtc5yR"><a href="#" data-page-node-id="jWGBC5nUiOAbZG8caPb88Q"><span class="owner" data-page-node-id="ckcawBV44qexOnrgaFejkj">token/</span>semantic-tokens</a></h3><span class="stars" data-page-node-id="l6uyKUAUpxKc2gacY8gduO">令牌</span></div>
+      <a class="desc-link" href="#" data-page-node-id="REUdCCRE91VKdWOiq7m41P"><p data-page-node-id="Grrtxx33KHPcDtApzGOLhZ">paper / ink / line / cinnabar 四组语义令牌，深浅色只换值不换名，组件层零改动。</p></a>
+      <div class="foot" data-page-node-id="hym0D2UaNJPcNKZwJknxEA"><span class="tag" data-page-node-id="DkdgwEuF1e4Zl66oFL30Sl">设计令牌</span></div>
+    </li>
+
+    <li class="card" data-cat="token" data-name="archivo-display" data-page-node-id="gjy7fw9JSYbYmnDgnQAyC2">
+      <div class="top" data-page-node-id="PwBM7QXSLfaUONp5uFSQWG"><h3 data-page-node-id="70MZSCOV7tN0K35l3xDCT1"><a href="#" data-page-node-id="vqmDo4issDwbneb2tHnLkn"><span class="owner" data-page-node-id="SdAF6C4hpfwCrKqZZCnw2X">token/</span>archivo-display</a></h3><span class="stars" data-page-node-id="OGSbu2FsZR6qWfdDCmAryN">令牌</span></div>
+      <a class="desc-link" href="#" data-page-node-id="15S6UmmrXZeiChdeZarFpD"><p data-page-node-id="o9Ji7Z7PU6vTIAiNXDW6Kl">标题用 Archivo 800 + letter-spacing -0.03em，正文用 Inter，代码用等宽。字体三层分工明确。</p></a>
+      <div class="foot" data-page-node-id="0zqemcDXBTiKJZ9wJnrXNP"><span class="tag" data-page-node-id="XqqUz75FKqomPjD0Cbl3E9">设计令牌</span></div>
+    </li>
+  </ol>
+
+  <p class="noresult" id="noresult" data-page-node-id="kAAYU5tQJ6ktyZFmYAVwj7">没有匹配的条目 —— 试试换个关键词。</p>
+
+  <!-- ══ 信息面板 ══ -->
+  <div class="panels" id="tokens" data-page-node-id="1BKq8IKFm5EJFGW4W1Gsx1">
+    <section class="panel" data-page-node-id="5oX0txbDphFXH98rKcd4Vf">
+      <h2 data-page-node-id="Az1CADvIX8ECKxwOWaizEv">设计令牌</h2>
+      <pre data-page-node-id="EHM4zQlw6wInQ9cU5ycLe0"><span class="c" data-page-node-id="cI2MMADEF5BobiYpvNrCDp">/* 浅色 · 宣纸 */</span>
+--paper:#f6f2ea;  --paper-2:#efe9dd;
+--card:#fffdf8;   --line:#e0d8c8;
+--ink:#2b2620;    --ink-2:#5f574a;
+--cinnabar:#c0392b;
+
+<span class="c" data-page-node-id="pS6ut4jpixy6Pxl8o861nI">/* 深色 · 暖黑 */</span>
+--paper:#211d18;  --paper-2:#282218;
+--card:#2a2620;   --line:#3b352c;
+--ink:#ece7de;    --ink-2:#b5ac9e;
+--cinnabar:#e06a52;</pre>
+      <p class="note" data-page-node-id="mnbjbbui48NYru0juxwqmy">深色下朱砂要提亮到 #e06a52，否则在暖黑底上会发闷。</p>
+    </section>
+    <section class="panel" data-page-node-id="3AmTG5r2Pn3Gd1Ja4y5mc3">
+      <h2 data-page-node-id="tAZaXLj8ytF2BjXXauFBPy">方格纸底纹</h2>
+      <pre data-page-node-id="zmEU6anjhV8dw5g45uZHNY"><span class="c" data-page-node-id="SbxmvfYGIigaEviYq2dOZF">/* 两道 1px 渐变叠加成网格 */</span>
+header.hero{
+  background-image:
+    linear-gradient(var(--paper-2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--paper-2) 1px,transparent 1px);
+  background-size:28px 28px;
+  border-bottom:1px solid var(--line);
+}</pre>
+      <p class="note" data-page-node-id="vWiq3ZhWLJmROBpGMheYBx">线色只比底色深一档，远看是纸纹，近看才是格。格子只在 Hero 区出现，正文区保持干净。</p>
+    </section>
+  </div>
+
+  <p class="demo-note" data-page-node-id="nzybSoHxCEiuhvykHqTQuL">设计复刻 Demo · 仅用于还原视觉语言，与原站无关联 · <span class="motto" style="font-family:var(--mono);color:var(--cinnabar)" data-page-node-id="gyoMBF6ZPoyKDyiFtQf336">纸墨朱砂</span></p>
+</main>
+
+<!-- ══ 页脚 ══ -->
+<footer data-page-node-id="eqdlMcZRLAnkQNBwFkEir3">
+  <div class="wrap frow" data-page-node-id="PTJwmwTxHnyzmGmYaiIzxS">
+    <span data-page-node-id="2L5MiI3o2fqDfxIeTHjNSA">© 2026 tool-kit · design-lab · <a href="#" data-page-node-id="U30cMJ4Eq2oX360FZtj7EK">GitHub</a> · <span class="motto" data-page-node-id="XV4MpPqp1TGwsV8qREr0eg">Into the Unknown</span></span>
+    <span data-page-node-id="HLRpIXWIPBRjDgiB1WTN2G">复刻自 awesome-dsh-plugin.com 的视觉系统，用于内部设计参考。</span>
+  </div>
+</footer>
+
+<button id="toTop" type="button" aria-label="回到顶部" data-page-node-id="FTD4K3qzKhhfwaVgDOFKpk">↑</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeBtn');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('#dex li.card'));
+  var q = document.getElementById('q');
+  var count = document.getElementById('count');
+  var total = document.getElementById('total');
+  var noresult = document.getElementById('noresult');
+  var sortSel = document.getElementById('sort');
+  var filters = document.getElementById('filters');
+  var dex = document.getElementById('dex');
+
+  var state = { cat: 'all', kw: '', sort: 'default', darkOnly: false, accent: false };
+
+  total.textContent = String(cards.length);
+
+  /* ── 主题切换 ── */
+  function applyTheme(t){
+    root.setAttribute('data-theme', t);
+    themeBtn.textContent = t === 'dark' ? '◐ 浅色' : '◐ 深色';
+  }
+  // 跟随系统初始
+  applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ── 筛选 + 搜索 + 排序 ── */
+  function render(){
+    var shown = 0;
+    cards.forEach(function(c){
+      var okCat = state.cat === 'all' || c.dataset.cat === state.cat;
+      var text = c.textContent.toLowerCase();
+      var okKw = !state.kw || text.indexOf(state.kw) !== -1;
+      var vis = okCat && okKw;
+      c.classList.toggle('hidden', !vis);
+      if (vis) shown++;
+    });
+    count.textContent = shown + ' / ' + cards.length;
+    noresult.style.display = shown ? 'none' : 'block';
+
+    var list = cards.slice().sort(function(a,b){
+      if (state.sort === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+      return 0;
+    });
+    list.forEach(function(c){ dex.appendChild(c); });
+  }
+
+  q.addEventListener('input', function(){ state.kw = q.value.trim().toLowerCase(); render(); });
+  sortSel.addEventListener('change', function(){ state.sort = sortSel.value; render(); });
+
+  filters.addEventListener('click', function(e){
+    var btn = e.target.closest('.chip');
+    if (!btn) return;
+    filters.querySelectorAll('.chip').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.cat = btn.dataset.cat;
+    render();
+  });
+
+  /* ── 两个 toggle（仅作视觉状态演示） ── */
+  document.getElementById('toggleDark').addEventListener('click', function(){
+    var on = this.getAttribute('aria-pressed') === 'true';
+    this.setAttribute('aria-pressed', String(!on));
+  });
+  document.getElementById('toggleAccent').addEventListener('click', function(){
+    var on = this.getAttribute('aria-pressed') === 'true';
+    this.setAttribute('aria-pressed', String(!on));
+  });
+
+  /* ── 复制命令 ── */
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-cmd]');
+    if (!btn) return;
+    var cmd = btn.dataset.cmd;
+    if (navigator.clipboard) navigator.clipboard.writeText(cmd).catch(function(){});
+    var label = btn.querySelector('b') || btn;
+    if (btn.classList.contains('copy')) {
+      var old = btn.textContent;
+      btn.textContent = '✓ copied';
+      btn.classList.add('done');
+      setTimeout(function(){ btn.textContent = old; btn.classList.remove('done'); }, 1200);
+    } else if (label && label.tagName === 'B') {
+      var prev = label.textContent;
+      label.textContent = '已复制 ✓';
+      setTimeout(function(){ label.textContent = prev; }, 1200);
+    }
+  });
+
+  /* 点外部收起下拉 */
+  document.addEventListener('click', function(e){
+    document.querySelectorAll('details.inst[open]').forEach(function(d){
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+
+  /* ── 回到顶部 ── */
+  var toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', function(){
+    toTop.classList.toggle('show', window.scrollY > 600);
+  }, { passive: true });
+  toTop.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  render();
+})();
+</script>
+</body>
+</html>
