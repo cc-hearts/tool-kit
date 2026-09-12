@@ -1,95 +1,194 @@
-# Tool Kit
+<p align="center">
+  <h1 align="center">Tool Kit · Developer Utility Marketplace</h1>
+</p>
 
-集成常用开发工具的「工具市场」，采用 **Nuxt 4 + Ant Design Vue 4 + UnoCSS** 技术栈，布局参考物料市场：左侧分类导航 + 工具卡片网格 + 工具详情页，支持亮/暗主题与 SSR。
+<p align="center">
+  An open-source developer toolkit marketplace covering common scenarios including data transformation, code generation, cryptography, and image processing.
+</p>
 
-## 快速开始
+<p align="center">
+  <b>English</b> · <a href="./README.zh-CN.md">简体中文</a>
+</p>
+
+---
+
+## 🌟 Highlights & Tech Stack
+
+- **Modern Full-stack Framework**: Built with **Nuxt 4** + **Vue 3.5+**, featuring full-site SSR (Server-Side Rendering) and high-performance client hydration.
+- **Next-Gen Component Library**: Powered by **antdv-next** and the official **`@antdv-next/nuxt`** module, providing SSR CSS-in-JS style extraction and automatic component registration.
+- **Atomic Styling**: **UnoCSS** (preset-wind3) paired with Shadcn / Zinc semantic design tokens for a clean, consistent design system.
+- **Dark Mode Support**: Seamless light/dark theme switching with Cookie persistence to eliminate FOUC and hydration mismatches.
+- **Registry-Driven Architecture**: Modular tools organized with lazy-loaded dynamic `import()`, synchronized with browser URL parameters (`?category=`, `?q=`).
+- **Client-Side Privacy**: Most utilities run entirely in the browser using native APIs (Web Crypto API, Canvas, etc.), keeping your data private and secure.
+
+---
+
+## 🛠️ Included Tools
+
+Currently includes **8 developer utilities** across 5 categories:
+
+| Tool | Category | Description |
+|---|---|---|
+| **YAML To DTS** | Conversion | Convert YAML configurations into TypeScript type declarations (`.d.ts`), supporting nested objects and array inference |
+| **SVG Format** | Conversion | Format SVG source code, normalizing `fill` / `stroke` colors to `currentColor` for easy icon component authoring |
+| **Secret Generator** | Security | Generate AES keys (CBC/GCM), strong random passwords, UUID v4, and JWT secrets locally using the Web Crypto API |
+| **Word Case Convert** | Conversion | Batch convert words or phrases between camelCase, kebab-case, snake_case, PascalCase, and other naming conventions |
+| **Image Crop** | Image | Client-side image cropping tool supporting zoom/pan, rotation, circular/rectangular clipping, and PNG/JPEG/WebP export |
+| **Image Preview** | Image | Single and multi-image preview gallery: view images via URL, local file upload, drag-and-drop, or clipboard paste |
+| **Random Avatar** | Fun | Generate Notion-style doodle avatars by randomly mixing facial features, hairstyles, and color palettes; export to SVG/PNG |
+| **Funny Nickname** | Fun | Nickname generator: batch produce humorous Chinese and English nicknames across foodie, slacker, tech meme, and honorific themes |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js >= 18.0.0
+- pnpm >= 11.0.0
+
+### Installation & Development
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/cc-hearts/tool-kit.git
+cd tool-kit
+
+# 2. Install dependencies
 pnpm install
-pnpm dev        # 开发（http://localhost:3000）
-pnpm build      # 生产构建
-pnpm preview    # 预览生产构建
+
+# 3. Start development server (defaults to port 3000)
+pnpm dev
+
+# 4. Build for production
+pnpm build
+
+# 5. Preview production build
+pnpm preview
 ```
 
-> 依赖安装说明：`pnpm-workspace.yaml` 中将 `minimumReleaseAge` 调整为 720 分钟（12 小时），避免 pnpm 默认供应链策略拦截刚发布的补丁版本；`onlyBuiltDependencies` 放行 esbuild / core-js 的安装脚本。
+> **Dependency Note**: The repository includes supply-chain policies in `pnpm-workspace.yaml` and allows execution scripts for essential build dependencies.
 
-## 目录结构
+---
+
+## 📂 Project Structure
 
 ```text
-app/
-├── app.vue                    # 根组件：ConfigProvider（主题/国际化）+ 布局出口
-├── error.vue                  # 全局错误页（404 / 500）
-├── layouts/
-│   └── default.vue            # a-layout 骨架：Header + Content + Footer
-├── pages/
-│   ├── index.vue              # 工具市场：分类 Sider + 工具网格（分类/关键词写入 URL query）
-│   └── tools/
-│       └── [slug].vue         # 工具详情页：按 slug 查注册表，动态加载工具视图
-├── components/                # 通用组件（自动导入，pathPrefix 关闭）
-│   ├── AppHeader.vue          # 顶栏：Logo / 全局搜索 / 主题切换
-│   ├── AppFooter.vue
-│   ├── CategoryMenu.vue       # 分类菜单（桌面侧栏 / 移动端下拉）
-│   ├── ToolCard.vue           # 工具卡片
-│   ├── ToolGrid.vue           # 卡片网格 + 空态
-│   └── ToolPageShell.vue      # 工具页统一外壳（返回 + 标题区 + 内容容器）
-├── tools/                     # ★ 工具注册表与工具实现
-│   ├── types.ts               # ToolMeta 类型 + defineTool()
-│   ├── categories.ts          # 分类清单
-│   ├── index.ts               # 汇总注册表 + getToolBySlug 等查询函数
-│   └── <slug>/                # 每个工具一个目录
-│       ├── index.ts           # defineTool({...}) 工具元信息
-│       └── XxxTool.vue        # 工具视图（懒加载）
-├── composables/
-│   └── useTheme.ts            # 主题状态（cookie 持久化 + antd algorithm/component token）
-├── utils/                     # 纯函数工具（Nuxt 自动导入）
-└── assets/css/main.css        # 全局样式修正
-server/
-└── api/track.post.ts          # 服务端路由示例（行为埋点上报）
+tool-kit/
+├── app/
+│   ├── app.vue                    # Root component: AConfigProvider (theme & locale) + layout outlet
+│   ├── error.vue                  # Global error page (404 / 500)
+│   ├── layouts/
+│   │   └── default.vue            # Base layout: Header + page container + Footer
+│   ├── pages/
+│   │   ├── index.vue              # Marketplace homepage: Category sidebar + tool card grid
+│   │   └── tools/
+│   │       └── [slug].vue         # Dynamic tool detail route: lazily loads tool component by slug
+│   ├── components/                # Shared UI components (Auto-imported by Nuxt, pathPrefix: false)
+│   │   ├── AppHeader.vue          # Top header: Logo / Global search / Theme toggle
+│   │   ├── AppFooter.vue          # Bottom footer
+│   │   ├── CategoryMenu.vue       # Category filter menu (Responsive: desktop sidebar + mobile drawer)
+│   │   ├── ToolCard.vue           # Marketplace tool card
+│   │   ├── ToolGrid.vue           # Card grid layout with empty search states
+│   │   └── ToolPageShell.vue      # Common shell for tool pages (Back button + title + content slot)
+│   ├── tools/                     # ★ Tool registry and implementations
+│   │   ├── types.ts               # ToolMeta interface definition & defineTool() helper
+│   │   ├── categories.ts          # Category metadata list
+│   │   ├── index.ts               # Master registry and getToolBySlug() query functions
+│   │   └── <slug>/                # Individual tool directories
+│   │       ├── index.ts           # Tool metadata definition via defineTool({...})
+│   │       └── XxxTool.vue        # Tool view component (lazily loaded via dynamic import())
+│   ├── composables/
+│   │   └── useTheme.ts            # Theme state management (Cookie persistence + antd tokens)
+│   ├── utils/                     # Utility helper functions (Auto-imported by Nuxt)
+│   └── assets/css/main.css        # Global design tokens and style overrides
+├── server/
+│   └── api/track.post.ts          # Server route example (telemetry event logging)
+├── nuxt.config.ts                 # Nuxt core configuration (modules, SEO meta, etc.)
+├── uno.config.ts                  # UnoCSS configuration and shortcuts
+└── package.json                   # Dependencies and scripts
 ```
 
-## 如何新增一个工具
+---
 
-1. **创建工具目录** `app/tools/<slug>/`，编写视图组件（纯客户端逻辑可直接用 antd 组件）：
+## 🧩 Adding a New Tool
 
-   ```vue
-   <!-- app/tools/my-tool/MyTool.vue -->
-   <script setup lang="ts">
-   const input = ref('')
-   </script>
+The architecture follows a **BOM (Bill of Materials) / Registry-driven Pattern**. Adding a new tool is fully modular and takes three simple steps:
 
-   <template>
-     <a-textarea v-model:value="input" :rows="12" />
-   </template>
-   ```
+### Step 1: Create tool directory and view component
 
-2. **注册工具元信息** `app/tools/my-tool/index.ts`：
+Create a new directory `app/tools/<slug>/` and implement your component (e.g. `app/tools/my-tool/MyTool.vue`):
 
-   ```ts
-   import { FlaskConical } from 'lucide-vue-next'
-   import { defineTool } from '../types'
+```vue
+<!-- app/tools/my-tool/MyTool.vue -->
+<script setup lang="ts">
+import { message } from 'antdv-next'
 
-   export default defineTool({
-     slug: 'my-tool',              // 路由 /tools/my-tool，需唯一
-     name: 'My Tool',
-     description: '一句话描述工具用途。',
-     category: 'devtools',          // 见 categories.ts
-     icon: FlaskConical,            // lucide-vue-next 图标
-     tags: ['demo'],
-     component: () => import('./MyTool.vue'),  // 懒加载，仅在访问详情页时下载
-   })
-   ```
+const text = ref('')
+function handleAction() {
+  message.success('Processed successfully!')
+}
+</script>
 
-3. **加入注册表**：在 `app/tools/index.ts` 的 `tools` 数组中追加一行。
+<template>
+  <div class="flex flex-col gap-4">
+    <a-textarea v-model:value="text" :rows="8" placeholder="Enter content..." />
+    <div class="flex justify-end">
+      <a-button type="primary" @click="handleAction">Process</a-button>
+    </div>
+  </div>
+</template>
+```
 
-完成。市场首页卡片、分类过滤、全局搜索、详情页路由均由注册表自动驱动，无需改任何页面代码。新增分类则先在 `app/tools/categories.ts` 中登记。
+### Step 2: Define tool metadata
 
-## 架构说明
+In `app/tools/my-tool/index.ts`, use `defineTool` to declare tool metadata:
 
-- **注册表驱动（物料清单模式）**：`app/tools` 是唯一的工具清单来源，市场卡片、分类计数、搜索、详情页动态加载全部从注册表派生；工具实现通过动态 `import()` 按需分包。
-- **URL 即状态**：分类（`?category=`）与搜索关键词（`?q=`）保存在 URL query 中，刷新/分享/回退均可用。
-- **主题系统**：`useTheme` 基于 cookie 持久化（SSR 与客户端渲染一致，避免水合不匹配），通过 `ConfigProvider` 切换 antd `darkAlgorithm` 并注入组件级 token；暗色设计基准为 `#050505` 页面底 + `#111111` 头部/面板 + Menu 透明底半透明蓝选中态。UnoCSS 侧通过 `html.dark` class 与 `dark:` 变体联动。
-- **antd 按需引入**：通过 `unplugin-vue-components` + `AntDesignVueResolver` 自动按需导入（v4 为 cssinjs，无需样式文件）。
+```ts
+// app/tools/my-tool/index.ts
+import { Wrench } from 'lucide-vue-next'
+import { defineTool } from '../types'
 
-## License
+export default defineTool({
+  slug: 'my-tool',                            // URL path: /tools/my-tool (must be unique)
+  name: 'My Utility Tool',                    // Display name
+  description: 'A concise summary of what this tool does.',
+  category: 'devtools',                       // Category ID (see categories.ts)
+  icon: Wrench,                               // Lucide icon component
+  tags: ['utility', 'demo'],                  // Search tags
+  component: () => import('./MyTool.vue'),    // Code-split: loaded only when visiting the tool page
+})
+```
 
-[MIT](./LICENSE)
+### Step 3: Register in the master list
+
+Add the tool import to the `tools` array in `app/tools/index.ts`:
+
+```ts
+// app/tools/index.ts
+import myTool from './my-tool'
+
+export const tools: ToolMeta[] = [
+  // ... existing tools
+  myTool,
+]
+```
+
+**That's it!** Marketplace card rendering, category counts, global search indexing, and detail page routing are all automatically handled without changing any page or layout files.
+
+---
+
+## 🏗️ Architecture Highlights
+
+- **Registry-Driven (BOM Pattern)**: `app/tools` serves as the single source of truth. Each tool is automatically code-split into independent chunks via dynamic `import()`, preventing initial bundle bloat.
+- **URL as State**: Category selection (`?category=`) and global search queries (`?q=`) are synchronized with URL query parameters for seamless history navigation and link sharing.
+- **SSR-Safe Styling**:
+  - `@antdv-next/nuxt` extracts CSS-in-JS styles on the server, preventing flash of unstyled content (FOUC);
+  - Theme state is stored in Cookies rather than localStorage alone, guaranteeing consistent rendering between server and client;
+  - UnoCSS and `main.css` align with Shadcn Zinc color tokens for smooth dark/light mode transitions.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
