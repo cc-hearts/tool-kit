@@ -1,6 +1,7 @@
 {
   "name": "@cc-heart/tool-kit",
   "version": "0.0.1",
+  "packageManager": "pnpm@11.20.0",
   "author": "Carl Chen",
   "license": "MIT",
   "scripts": {
