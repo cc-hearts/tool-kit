@@ -95,16 +95,20 @@ tool-kit/
 ├── app/
 │   ├── app.vue                    # 根组件：AConfigProvider（主题/中文国际化）+ AApp（反馈上下文）+ 布局出口
 │   ├── error.vue                  # 全局错误缺省页（404 / 500）
+│   ├── sections.ts                # ★ 栏目注册表（工具 / 提示词 / …），驱动顶部 tab 导航
 │   ├── layouts/
 │   │   └── default.vue            # 基础骨架：Header + 页面容器 + Footer
 │   ├── pages/
-│   │   ├── index.vue              # 工具市场首页：分类侧边栏 + 工具卡片网格
+│   │   ├── index.vue              # 工具栏目：分类侧边栏 + 工具栏 + 工具卡片网格
+│   │   ├── prompts.vue            # 提示词栏目占位页（沿用同一套栏目外壳）
 │   │   └── tools/
 │   │       └── [slug].vue         # 工具详情动态路由：按 slug 动态加载对应工具组件
 │   ├── components/                # 通用组件（Nuxt 自动导入，pathPrefix: false）
-│   │   ├── AppHeader.vue          # 顶部导航栏：品牌 Logo / 全局搜索 / 主题切换
+│   │   ├── AppHeader.vue          # 顶部导航栏：上行品牌 + 搜索 + 主题，下行栏目 tab
+│   │   ├── SectionNav.vue         # 栏目 tab 导航（工具 / 提示词 / …），由 sections.ts 驱动
 │   │   ├── AppFooter.vue          # 底部信息栏
-│   │   ├── CategoryMenu.vue       # 分类选择菜单（响应式：桌面侧栏 + 移动端折叠）
+│   │   ├── GridBackdrop.vue       # 方格纸底纹背景层（fixed，铺在所有内容之下）
+│   │   ├── CategoryMenu.vue       # 分类侧边栏列表（带数量；移动端改用下拉选择）
 │   │   ├── ToolCard.vue           # 市场首页工具卡片
 │   │   ├── ToolGrid.vue           # 卡片网格布局 + 搜索空状态提示
 │   │   └── ToolPageShell.vue      # 工具详情页公共外壳（返回按钮 + 标题区 + 内容插槽）

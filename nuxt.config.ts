@@ -11,7 +11,7 @@ export default defineNuxtConfig({
 
   css: ['@unocss/reset/tailwind.css', '~/assets/css/main.css'],
 
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   typescript: {
     strict: true,
@@ -24,9 +24,9 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: '集成常用开发工具的工具市场，覆盖数据转换、代码辅助、安全加密等场景。' },
-        // 移动端浏览器 UI 跟随亮暗主题
-        { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' },
-        { name: 'theme-color', content: '#09090b', media: '(prefers-color-scheme: dark)' },
+        // 移动端浏览器 UI 跟随亮暗主题（纸墨朱砂：暖纸 / 暖黑）
+        { name: 'theme-color', content: '#f6f2ea', media: '(prefers-color-scheme: light)' },
+        { name: 'theme-color', content: '#211d18', media: '(prefers-color-scheme: dark)' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'Tool Kit' },
         { name: 'twitter:card', content: 'summary' },

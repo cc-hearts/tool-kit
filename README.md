@@ -95,16 +95,20 @@ tool-kit/
 ├── app/
 │   ├── app.vue                    # Root component: AConfigProvider (theme & locale) + AApp (feedback context) + layout outlet
 │   ├── error.vue                  # Global error page (404 / 500)
+│   ├── sections.ts                # ★ Section registry (Tools / 提示词 / …) backing the top tab nav
 │   ├── layouts/
 │   │   └── default.vue            # Base layout: Header + page container + Footer
 │   ├── pages/
-│   │   ├── index.vue              # Marketplace homepage: Category sidebar + tool card grid
+│   │   ├── index.vue              # Tools section: Category sidebar + toolbar + card grid
+│   │   ├── prompts.vue            # 提示词 section placeholder (same section shell)
 │   │   └── tools/
 │   │       └── [slug].vue         # Dynamic tool detail route: lazily loads tool component by slug
 │   ├── components/                # Shared UI components (Auto-imported by Nuxt, pathPrefix: false)
-│   │   ├── AppHeader.vue          # Top header: Logo / Global search / Theme toggle
+│   │   ├── AppHeader.vue          # Top header: brand + search + theme (row 1) and section tabs (row 2)
+│   │   ├── SectionNav.vue         # Section tab nav (Tools / 提示词 / …), driven by sections.ts
 │   │   ├── AppFooter.vue          # Bottom footer
-│   │   ├── CategoryMenu.vue       # Category filter menu (Responsive: desktop sidebar + mobile drawer)
+│   │   ├── GridBackdrop.vue       # Paper-grid backdrop layer (fixed, behind all content)
+│   │   ├── CategoryMenu.vue       # Category sidebar list with counts (desktop; mobile uses a select)
 │   │   ├── ToolCard.vue           # Marketplace tool card
 │   │   ├── ToolGrid.vue           # Card grid layout with empty search states
 │   │   └── ToolPageShell.vue      # Common shell for tool pages (Back button + title + content slot)

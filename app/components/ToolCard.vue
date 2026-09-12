@@ -17,7 +17,9 @@ defineProps<{ tool: ToolMeta }>()
         <component :is="tool.icon" :size="20" />
       </span>
       <div class="min-w-0">
-        <div class="text-sm font-semibold tracking-tight">{{ tool.name }}</div>
+        <div class="text-sm font-semibold tracking-tight transition-colors group-hover:text-cinnabar-deep">
+          {{ tool.name }}
+        </div>
         <p class="mt-1 line-clamp-2 text-sm text-muted-foreground">
           {{ tool.description }}
         </p>

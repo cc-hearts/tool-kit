@@ -1,38 +1,85 @@
-/* shadcn 风格语义化设计令牌（zinc 中性色系，RGB 三元组），
-   UnoCSS 与 antdv-next 主题均对齐到这里，亮暗双模式通过 .dark 切换 */
+/* shadcn 风格语义化设计令牌（纸墨朱砂 · warm paper，RGB 三元组），
+   UnoCSS 与 antdv-next 主题均对齐到这里，亮暗双模式通过 .dark 切换。
+
+   色系取自「纸墨朱砂」设计语言：暖纸底 + 墨色结构 + 朱砂点缀。
+   不用纯白/纯黑 —— 底色偏黄、墨色偏暖，整体呈纸感，降低屏幕冷光。
+   朱砂是唯一强调色，克制使用：只出现在聚焦环、hover 高亮与关键 CTA。 */
 :root {
   /* 让原生控件（滚动条 / 表单）跟随亮暗主题 */
   color-scheme: light;
-  --background: 255 255 255;
-  --foreground: 9 9 11;
-  --card: 255 255 255;
-  --card-foreground: 9 9 11;
-  --muted: 244 244 245;
-  --muted-foreground: 113 113 122;
-  --border: 228 228 231;
-  --input: 228 228 231;
-  --primary: 24 24 27;
-  --primary-foreground: 250 250 250;
-  --accent: 244 244 245;
-  --accent-foreground: 24 24 27;
-  --ring: 161 161 170;
+
+  /* 纸 · 暖白底 */
+  --background: 246 242 234; /* #f6f2ea */
+  --card: 255 253 248; /* #fffdf8 */
+  --card-foreground: 43 38 32;
+
+  /* 墨 · 暖黑字（结构色，承担选中态与主按钮） */
+  --foreground: 43 38 32; /* #2b2620 */
+  --muted: 239 233 221; /* #efe9dd 纸的第二档 */
+  --muted-foreground: 95 87 74; /* #5f574a */
+  --border: 224 216 200; /* #e0d8c8 */
+  --input: 224 216 200;
+  --primary: 43 38 32; /* 主按钮用墨色，与朱砂分工 */
+  --primary-foreground: 246 242 234;
+  --accent: 247 229 226; /* #f7e5e2 朱砂淡底 */
+  --accent-foreground: 161 47 34; /* #a12f22 */
+  --ring: 192 57 43; /* 聚焦环用朱砂 */
+
+  /* 朱砂 · 唯一强调色 */
+  --cinnabar: 192 57 43; /* #c0392b */
+  --cinnabar-deep: 161 47 34; /* #a12f22 */
+  --cinnabar-soft: 247 229 226; /* #f7e5e2 */
+  --cinnabar-border: 229 196 190; /* #e5c4be */
+
+  /* 方格纸底纹：全站统一一档强度。
+     只比底色深一点点 —— 读起来是「纸」而不是「表格」。
+     不要再做「局部加强版」：强弱两档相邻时，交界处会形成接缝。 */
+  --grid-line: 240 235 224;
 }
 
 .dark {
   color-scheme: dark;
-  --background: 9 9 11;
-  --foreground: 250 250 250;
-  --card: 16 16 18;
-  --card-foreground: 250 250 250;
-  --muted: 39 39 42;
-  --muted-foreground: 161 161 170;
-  --border: 39 39 42;
-  --input: 39 39 42;
-  --primary: 250 250 250;
-  --primary-foreground: 24 24 27;
-  --accent: 39 39 42;
-  --accent-foreground: 250 250 250;
-  --ring: 212 212 216;
+
+  /* 纸 · 暖黑 */
+  --background: 33 29 24; /* #211d18 */
+  --card: 42 38 32; /* #2a2620 */
+  --card-foreground: 236 231 222;
+
+  /* 墨 · 暖白字 */
+  --foreground: 236 231 222; /* #ece7de */
+  --muted: 40 34 24; /* #282218 */
+  --muted-foreground: 181 172 158; /* #b5ac9e */
+  --border: 59 53 44; /* #3b352c */
+  --input: 59 53 44;
+  --primary: 236 231 222;
+  --primary-foreground: 33 29 24;
+  --accent: 58 39 32;
+  --accent-foreground: 234 128 105; /* #ea8069 */
+  --ring: 224 106 82;
+
+  /* 朱砂在暖黑底上必须提亮，否则发闷 */
+  --cinnabar: 224 106 82; /* #e06a52 */
+  --cinnabar-deep: 234 128 105; /* #ea8069 */
+  --cinnabar-soft: 58 39 32;
+  --cinnabar-border: 100 56 44;
+
+  --grid-line: 39 34 28;
+}
+
+/* ── 方格纸底纹 ────────────────────────────────────────────────
+   已抽成组件 `app/components/GridBackdrop.vue`（挂在 layouts/default.vue 上）。
+   线色仍走这里的 --grid-line 令牌；全站统一一档，不做分区加强（交界会出接缝）。 */
+
+/* 选中文字用朱砂淡底，呼应强调色 */
+::selection {
+  background: rgb(var(--cinnabar-soft));
+  color: rgb(var(--foreground));
+}
+
+/* 聚焦环统一走朱砂，替代浏览器默认蓝 */
+:focus-visible {
+  outline: 2px solid rgb(var(--cinnabar));
+  outline-offset: 2px;
 }
 
 /* 全局兼容性修正 */
@@ -41,44 +88,6 @@
    会导致 antd 按钮内「图标 + 文字」垂直堆叠，恢复 inline 排版 */
 .ant-btn svg {
   display: inline-block;
-}
-
-/* antdv-next 下 InputSearch 采用 SpaceCompact（弹性盒）组合输入框与搜索按钮。
-   UnoCSS reset 的 block/border/background 规则会破坏其布局与主题色，
-   此处确保内部输入框占据剩余空间、搜索按钮对齐设计系统语义令牌 */
-.ant-input-search {
-  display: inline-flex;
-  align-items: stretch;
-}
-
-.ant-input-search .ant-input-affix-wrapper {
-  flex: 1;
-  min-width: 0;
-}
-
-.ant-input-search .ant-input-search-btn.ant-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(var(--border));
-  background-color: rgb(var(--muted));
-  color: rgb(var(--muted-foreground));
-  transition: all 0.2s;
-}
-
-.ant-input-search .ant-input-search-btn.ant-btn:not(:disabled):hover {
-  background-color: rgb(var(--accent));
-  color: rgb(var(--foreground));
-  border-color: rgb(var(--border));
-}
-
-.ant-input-search .ant-input-search-btn .anticon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
 }
 
 /* 主按钮对齐 shadcn primary 语义（antdv 基础 .ant-btn 透明背景在同优先级下可能压过 primary 变体，
