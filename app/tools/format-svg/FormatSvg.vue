@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { js2xml, xml2json } from 'xml-js'
 import { Copy, Download, Upload } from 'lucide-vue-next'
-import type { UploadProps } from 'ant-design-vue'
+import type { UploadProps } from 'antdv-next'
 import { copyText } from '~/utils/clipboard'
 
 const source = ref('')

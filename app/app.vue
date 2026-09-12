@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import zhCN from 'antdv-next/locale/zh_CN'
 import 'dayjs/locale/zh-cn'
 
 const { isDark, themeConfig } = useTheme()

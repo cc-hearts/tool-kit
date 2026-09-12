@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
+import { message } from 'antdv-next'
 import { ExternalLink, Images, Link2, Trash2, Upload } from 'lucide-vue-next'
 
 type Mode = 'single' | 'multi'

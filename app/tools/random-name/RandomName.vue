@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
+import { message } from 'antdv-next'
 import { Copy, RefreshCw } from 'lucide-vue-next'
 import { copyText } from '~/utils/clipboard'
 import {

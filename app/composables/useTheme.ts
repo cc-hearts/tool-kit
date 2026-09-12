@@ -1,4 +1,4 @@
-import { theme as antdTheme } from 'ant-design-vue'
+import { theme as antdTheme } from 'antdv-next'
 
 type ThemeMode = 'light' | 'dark'
 

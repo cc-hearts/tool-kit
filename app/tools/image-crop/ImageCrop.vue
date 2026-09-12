@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Area } from '@antdv-next/vue-easy-crop'
 import Cropper from '@antdv-next/vue-easy-crop'
-import { message } from 'ant-design-vue'
+import { message } from 'antdv-next'
 import { RefreshCw, Upload } from 'lucide-vue-next'
 
 type OutputFormat = 'png' | 'jpeg' | 'webp'
