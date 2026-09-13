@@ -45,6 +45,7 @@ export const sections: Section[] = [
     match: ['/prompts'],
     icon: Sparkles,
     description: '可复用的提示词模板库，按场景整理，复制即用。',
+    ready: true,
   },
 ]
 
