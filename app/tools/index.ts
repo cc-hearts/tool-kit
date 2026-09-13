@@ -1,5 +1,6 @@
 import type { ToolMeta } from './types'
 import { toolCategories } from './categories'
+import cookieParser from './cookie-parser'
 import formatSvg from './format-svg'
 import imageCrop from './image-crop'
 import imagePreview from './image-preview'
@@ -22,6 +23,7 @@ export const tools: ToolMeta[] = [
   imagePreview,
   randomAvatar,
   randomName,
+  cookieParser,
 ]
 
 export { toolCategories }
