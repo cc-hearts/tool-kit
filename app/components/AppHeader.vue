@@ -32,7 +32,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
        两行共用一条底边，tab 的选中下划线压在底边上。
        背景用不透明的 bg-background：半透明 + backdrop-blur 会让方格纸底纹从头部透出来，
        头部区域出现几道淡淡的网格线，读起来很脏 -->
-  <header class="app-header sticky top-0 z-50 border-b border-border bg-transparent">
+  <header class="app-header sticky top-0 z-50 border-b border-border bg-transparent backdrop-blur-[4px]">
     <div class="page-container flex h-14 items-center gap-3">
       <NuxtLink to="/" class="group flex shrink-0 items-center gap-2 font-semibold tracking-tight">
         <span class="icon-box size-8 transition-colors group-hover:border-cinnabar-border group-hover:text-cinnabar">
