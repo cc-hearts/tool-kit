@@ -50,7 +50,7 @@ Currently includes **8 developer utilities** across 5 categories:
 | **SVG Format** | Conversion | Format SVG source code, normalizing `fill` / `stroke` colors to `currentColor` for easy icon component authoring |
 | **Secret Generator** | Security | Generate AES keys (CBC/GCM), strong random passwords, UUID v4, and JWT secrets locally using the Web Crypto API |
 | **Word Case Convert** | Conversion | Batch convert words or phrases between camelCase, kebab-case, snake_case, PascalCase, and other naming conventions |
-| **Image Crop** | Image | Client-side image cropping tool supporting zoom/pan, rotation, circular/rectangular clipping, and PNG/JPEG/WebP export |
+| **Image Crop** | Image | Client-side image cropping tool supporting original-size (no-crop) export, zoom/pan, rotation, circular/rectangular clipping, and PNG/JPEG/WebP export |
 | **Image Preview** | Image | Single and multi-image preview gallery: view images via URL, local file upload, drag-and-drop, or clipboard paste |
 | **Random Avatar** | Fun | Generate Notion-style doodle avatars by randomly mixing facial features, hairstyles, and color palettes; export to SVG/PNG |
 | **Funny Nickname** | Fun | Nickname generator: batch produce humorous Chinese and English nicknames across foodie, slacker, tech meme, and honorific themes |

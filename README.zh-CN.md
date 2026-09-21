@@ -50,7 +50,7 @@
 | **SVG Format** | 格式转换 | 格式化 SVG 源码，将 `fill` / `stroke` 颜色统一替换为 `currentColor`，便于封装为通用图标组件 |
 | **Secret Generator** | 安全加密 | 基于 Web Crypto API 本地生成 AES 密钥（CBC/GCM）、高强度随机密码、UUID v4 与 JWT Secret |
 | **Word Case Convert** | 格式转换 | 批量将单词或短语转换为 camelCase、kebab-case、snake_case、PascalCase 等常见命名格式 |
-| **Image Crop** | 图片处理 | 本地图片裁剪工具，支持缩放拖拽、旋转、圆形/矩形裁剪，支持导出为 PNG/JPEG/WebP |
+| **Image Crop** | 图片处理 | 本地图片裁剪工具，支持原图不裁剪导出、缩放拖拽、旋转、圆形/矩形裁剪，支持导出为 PNG/JPEG/WebP |
 | **Image Preview** | 图片处理 | 单图预览与多图画廊浏览：支持输入图片 URL、本地文件上传、拖拽或剪贴板粘贴直接查看 |
 | **Random Avatar** | 趣味生成 | 生成 Notion 简笔画风格头像，支持五官、发型、配色的随机拼装或单独重掷，支持导出 SVG/PNG |
 | **Funny Nickname** | 趣味生成 | 注册取名救星：批量生成沙雕中文网名与搞笑英文网名（吃货系、摆烂系、技术梗、头衔梗等） |

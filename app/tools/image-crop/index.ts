@@ -5,7 +5,7 @@ import { defineTool } from '../types'
 export default defineTool({
   slug: 'image-crop',
   name: 'Image Crop',
-  description: '本地图片裁剪工具，支持拖拽缩放旋转、圆形/方形裁剪、多种比例与 PNG/JPEG/WebP 导出，图片不出浏览器。',
+  description: '本地图片裁剪工具，支持原图不裁剪导出、拖拽缩放旋转、圆形/方形裁剪、多种比例与 PNG/JPEG/WebP 导出，图片不出浏览器。',
   category: 'image',
   icon: Crop,
   tags: ['crop', 'avatar', 'canvas'],

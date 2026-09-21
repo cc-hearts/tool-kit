@@ -8,12 +8,16 @@ const { message } = App.useApp()
 
 type OutputFormat = 'png' | 'jpeg' | 'webp'
 
+/** 'original' = 原图模式：不裁剪，按自然尺寸导出完整图片 */
+type AspectValue = 'original' | number
+
 interface AspectOption {
   label: string
-  value: number
+  value: AspectValue
 }
 
 const aspectOptions: AspectOption[] = [
+  { label: '原图', value: 'original' },
   { label: '1:1', value: 1 },
   { label: '4:3', value: 4 / 3 },
   { label: '3:4', value: 3 / 4 },
@@ -39,9 +43,29 @@ let sourceImage: HTMLImageElement | null = null
 const crop = ref({ x: 0, y: 0 })
 const zoom = ref(1)
 const rotation = ref(0)
-const aspect = ref(1)
-const cropShape = ref<'round' | 'rect'>('round')
+const aspect = ref<AspectValue>('original')
+const cropShape = ref<'round' | 'rect'>('rect')
 const showGrid = ref(true)
+
+/** 原图模式：锁定缩放/旋转/形状，导出完整自然尺寸 */
+const keepOriginal = computed(() => aspect.value === 'original')
+
+/** 自然尺寸（解码后才有值），原图模式据此决定裁剪框比例与导出尺寸 */
+const naturalSize = ref<{ width: number, height: number } | null>(null)
+
+/** 圆形裁剪被库强制为 1:1，非原图模式下裁剪框比例取其配置值 */
+const effectiveAspect = computed(() => {
+  if (keepOriginal.value) {
+    const size = naturalSize.value
+    return size ? size.width / size.height : 1
+  }
+  return aspect.value as number
+})
+
+const effectiveCropShape = computed<'round' | 'rect'>(() => (keepOriginal.value ? 'rect' : cropShape.value))
+
+/** 圆形裁剪被库强制为 1:1，此时裁剪比例不可用（原图模式下形状被锁为方形） */
+const isRoundCrop = computed(() => cropShape.value === 'round')
 
 /* ---------- 导出参数 ---------- */
 const outputFormat = ref<OutputFormat>('png')
@@ -76,11 +100,13 @@ function loadFile(file: File) {
   imageSrc.value = URL.createObjectURL(file)
   fileNameBase.value = file.name.replace(/\.[^.]+$/, '') || 'image'
   sourceImage = null
+  naturalSize.value = null
   resetTransform()
 
   createImage(imageSrc.value)
     .then((img) => {
       sourceImage = img
+      naturalSize.value = { width: img.naturalWidth, height: img.naturalHeight }
       scheduleDraw()
     })
     .catch(() => message.error('图片解码失败，请换一张试试'))
@@ -112,6 +138,37 @@ onBeforeUnmount(() => {
 })
 
 /* ---------- 裁剪结果 → Canvas ---------- */
+
+/**
+ * 原图模式：按自然尺寸 1:1 重绘，不做任何裁剪、旋转或缩放，
+ * 因此导出尺寸与源图完全一致（不依赖裁剪框的取整结果）。
+ */
+function buildOriginalCanvas() {
+  const size = naturalSize.value
+  if (!sourceImage || !size)
+    return null
+
+  const out = document.createElement('canvas')
+  out.width = size.width
+  out.height = size.height
+  const ctx = out.getContext('2d')
+  if (!ctx)
+    return null
+
+  ctx.drawImage(sourceImage, 0, 0)
+  return out
+}
+
+/** 统一出口：原图模式走整图重绘，其余按裁剪框截取 */
+function buildResultCanvas(flattenWhite: boolean) {
+  if (keepOriginal.value)
+    return buildOriginalCanvas()
+
+  const area = croppedAreaPixels.value
+  if (!area)
+    return null
+  return buildCroppedCanvas(area, cropShape.value === 'round', flattenWhite)
+}
 
 /**
  * 用足够容纳旋转后图像的正方形画布先「摆正」源图，
@@ -172,23 +229,22 @@ function buildCroppedCanvas(area: Area, round: boolean, flattenWhite: boolean) {
 }
 
 function drawPreview() {
-  const area = croppedAreaPixels.value
   const canvas = previewCanvasRef.value
-  if (!area || !canvas || !sourceImage)
+  if (!canvas || !sourceImage)
     return
 
-  const cropped = buildCroppedCanvas(area, cropShape.value === 'round', false)
-  if (!cropped)
+  const result = buildResultCanvas(false)
+  if (!result)
     return
 
-  // 预览画布内部分辨率对齐裁剪区域（封顶 800），显示尺寸固定收进预览框
-  canvas.width = Math.min(cropped.width, 800)
-  canvas.height = Math.min(cropped.height, 800)
+  // 预览画布内部分辨率对齐结果尺寸（封顶 800），显示尺寸固定收进预览框
+  canvas.width = Math.min(result.width, 800)
+  canvas.height = Math.min(result.height, 800)
   const ctx = canvas.getContext('2d')
   if (!ctx)
     return
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.drawImage(cropped, 0, 0, canvas.width, canvas.height)
+  ctx.drawImage(result, 0, 0, canvas.width, canvas.height)
 }
 
 let drawRafId = 0
@@ -208,14 +264,49 @@ function onCropAreaChange(_percentages: Area, pixels: Area) {
   scheduleDraw()
 }
 
-watch(cropShape, scheduleDraw)
+/** 进入原图模式时复位变换与形状：该模式下不裁剪、不旋转、不缩放 */
+watch(keepOriginal, (value) => {
+  if (value) {
+    crop.value = { x: 0, y: 0 }
+    zoom.value = 1
+    rotation.value = 0
+    // 圆形被库强制为 1:1，与原图模式互斥；退出原图模式后保持方形
+    cropShape.value = 'rect'
+  }
+  scheduleDraw()
+})
+
+/** 自然尺寸就绪后，原图模式的裁剪框比例与结果尺寸同步刷新 */
+watch(naturalSize, scheduleDraw)
+
+/** 圆形裁剪被库强制为 1:1，切换形状时收敛比例，避免「选了比例却仍是方形」 */
+watch(cropShape, (shape) => {
+  if (shape === 'round' && !keepOriginal.value)
+    aspect.value = 1
+  scheduleDraw()
+})
+
+/**
+ * 库在 aspect 变化后只重算裁剪框尺寸、不再派发 crop-area-change，
+ * 这里更新一次 crop 引用触发其重新派发，避免预览/输出尺寸停留在上一个比例。
+ */
+watch(aspect, () => {
+  crop.value = { ...crop.value }
+}, { flush: 'post' })
 
 const outputSizeLabel = computed(() => {
+  if (keepOriginal.value) {
+    const size = naturalSize.value
+    return size ? `${size.width} × ${size.height} px · 原图` : '原图'
+  }
   const area = croppedAreaPixels.value
   if (!area)
     return ''
   return `${Math.round(area.width)} × ${Math.round(area.height)} px`
 })
+
+/** 文件名后缀：原图模式不裁剪，用 -original 区分 */
+const outputSuffix = computed(() => (keepOriginal.value ? 'original' : 'cropped'))
 
 /* ---------- 下载 ---------- */
 
@@ -237,22 +328,21 @@ function toBlob(canvas: HTMLCanvasElement, mime: string, quality: number) {
 }
 
 async function downloadImage() {
-  const area = croppedAreaPixels.value
-  if (!area || !sourceImage) {
+  if (!sourceImage) {
     message.warning('请先选择图片')
     return
   }
 
   isExporting.value = true
   try {
-    const canvas = buildCroppedCanvas(area, cropShape.value === 'round', outputFormat.value === 'jpeg')
+    const canvas = buildResultCanvas(outputFormat.value === 'jpeg')
     if (!canvas)
       throw new Error('导出失败')
     const blob = await toBlob(canvas, MIME[outputFormat.value], quality.value)
     const ext = outputFormat.value === 'jpeg' ? 'jpg' : outputFormat.value
     const anchor = document.createElement('a')
     anchor.href = URL.createObjectURL(blob)
-    anchor.download = `${fileNameBase.value}-cropped.${ext}`
+    anchor.download = `${fileNameBase.value}-${outputSuffix.value}.${ext}`
     anchor.click()
     URL.revokeObjectURL(anchor.href)
   }
@@ -302,32 +392,35 @@ async function downloadImage() {
               v-model:zoom="zoom"
               v-model:rotation="rotation"
               :image="imageSrc"
-              :aspect="aspect"
-              :crop-shape="cropShape"
+              :aspect="effectiveAspect"
+              :crop-shape="effectiveCropShape"
               :show-grid="showGrid"
               :min-zoom="1"
-              :max-zoom="3"
-              :zoom-with-scroll="true"
+              :max-zoom="keepOriginal ? 1 : 3"
+              :zoom-with-scroll="!keepOriginal"
               @crop-area-change="onCropAreaChange"
             />
           </div>
           <p class="m-0 text-center text-xs text-muted-foreground">
-            拖动调整位置 · 滚轮缩放 · 方向键微调
+            {{ keepOriginal ? '原图模式：不裁剪，导出完整原图' : '拖动调整位置 · 滚轮缩放 · 方向键微调' }}
           </p>
         </div>
 
         <!-- 参数 -->
         <a-form layout="vertical" class="min-w-0">
           <a-form-item label="裁剪比例">
-            <a-radio-group v-model:value="aspect" button-style="solid" size="small">
+            <a-radio-group v-model:value="aspect" button-style="solid" size="small" :disabled="isRoundCrop">
               <a-radio-button v-for="option in aspectOptions" :key="option.label" :value="option.value">
                 {{ option.label }}
               </a-radio-button>
             </a-radio-group>
+            <p class="mb-0 mt-1 text-xs text-muted-foreground">
+              {{ isRoundCrop ? '圆形裁剪固定 1:1' : '选「原图」按原始尺寸整图导出，不裁剪' }}
+            </p>
           </a-form-item>
 
           <a-form-item label="裁剪形状">
-            <a-radio-group v-model:value="cropShape" button-style="solid" size="small">
+            <a-radio-group v-model:value="cropShape" button-style="solid" size="small" :disabled="keepOriginal">
               <a-radio-button value="round">
                 圆形
               </a-radio-button>
@@ -339,8 +432,8 @@ async function downloadImage() {
 
           <a-form-item label="旋转">
             <div class="flex items-center gap-2">
-              <a-slider v-model:value="rotation" :min="-180" :max="180" :tip-formatter="(v?: number) => `${v ?? 0}°`" class="flex-1" />
-              <a-button size="small" @click="rotation = 0">
+              <a-slider v-model:value="rotation" :min="-180" :max="180" :disabled="keepOriginal" :tip-formatter="(v?: number) => `${v ?? 0}°`" class="flex-1" />
+              <a-button size="small" :disabled="keepOriginal" @click="rotation = 0">
                 <template #icon>
                   <RefreshCw :size="13" />
                 </template>
@@ -349,11 +442,11 @@ async function downloadImage() {
           </a-form-item>
 
           <a-form-item label="缩放">
-            <a-slider v-model:value="zoom" :min="1" :max="3" :step="0.01" />
+            <a-slider v-model:value="zoom" :min="1" :max="3" :step="0.01" :disabled="keepOriginal" />
           </a-form-item>
 
           <a-form-item class="!mb-0">
-            <a-checkbox v-model:checked="showGrid">
+            <a-checkbox v-model:checked="showGrid" :disabled="keepOriginal">
               显示网格线
             </a-checkbox>
           </a-form-item>
@@ -412,7 +505,7 @@ async function downloadImage() {
           </a-space>
 
           <p class="mb-0 mt-2 text-xs text-muted-foreground">
-            将保存为 {{ fileNameBase || 'image' }}-cropped.{{ outputFormat === 'jpeg' ? 'jpg' : outputFormat }}
+            将保存为 {{ fileNameBase || 'image' }}-{{ outputSuffix }}.{{ outputFormat === 'jpeg' ? 'jpg' : outputFormat }}
           </p>
         </a-form>
       </div>
