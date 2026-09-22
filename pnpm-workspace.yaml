@@ -1,6 +1,7 @@
 allowBuilds:
   core-js: true
   esbuild: true
+  protobufjs: false
 minimumReleaseAge: 720
 onlyBuiltDependencies:
   - core-js

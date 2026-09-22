@@ -42,7 +42,7 @@
 
 ## 🛠️ Included Tools
 
-Currently includes **8 developer utilities** across 5 categories:
+Currently includes **9 developer utilities** across 5 categories:
 
 | Tool | Category | Description |
 |---|---|---|
@@ -51,6 +51,7 @@ Currently includes **8 developer utilities** across 5 categories:
 | **Secret Generator** | Security | Generate AES keys (CBC/GCM), strong random passwords, UUID v4, and JWT secrets locally using the Web Crypto API |
 | **Word Case Convert** | Conversion | Batch convert words or phrases between camelCase, kebab-case, snake_case, PascalCase, and other naming conventions |
 | **Image Crop** | Image | Client-side image cropping tool supporting original-size (no-crop) export, zoom/pan, rotation, circular/rectangular clipping, and PNG/JPEG/WebP export |
+| **Background Remover** | Image | Client-side AI background removal: runs a segmentation model (u2netp) in the browser, previews transparency on a checkerboard, supports restore/erase brush refinement, and exports transparent PNG — images never leave your device |
 | **Image Preview** | Image | Single and multi-image preview gallery: view images via URL, local file upload, drag-and-drop, or clipboard paste |
 | **Random Avatar** | Fun | Generate Notion-style doodle avatars by randomly mixing facial features, hairstyles, and color palettes; export to SVG/PNG |
 | **Funny Nickname** | Fun | Nickname generator: batch produce humorous Chinese and English nicknames across foodie, slacker, tech meme, and honorific themes |

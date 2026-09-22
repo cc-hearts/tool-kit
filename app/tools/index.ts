@@ -4,6 +4,7 @@ import cookieParser from './cookie-parser'
 import formatSvg from './format-svg'
 import imageCrop from './image-crop'
 import imagePreview from './image-preview'
+import backgroundRemover from './background-remover'
 import randomAvatar from './random-avatar'
 import randomName from './random-name'
 import secret from './secret'
@@ -21,6 +22,7 @@ export const tools: ToolMeta[] = [
   wordTranslation,
   imageCrop,
   imagePreview,
+  backgroundRemover,
   randomAvatar,
   randomName,
   cookieParser,
