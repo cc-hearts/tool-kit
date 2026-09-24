@@ -42,10 +42,11 @@
 
 ## 🛠️ Included Tools
 
-Currently includes **9 developer utilities** across 5 categories:
+Currently includes **11 developer utilities** across 5 categories:
 
 | Tool | Category | Description |
 |---|---|---|
+| **Base64 To PNG** | Conversion | Bidirectional conversion between Base64 and PNG: parse raw Base64/Data URLs into PNG, analyze dimensions & size, preview on transparent chessboard, and copy or download with one click |
 | **YAML To DTS** | Conversion | Convert YAML configurations into TypeScript type declarations (`.d.ts`), supporting nested objects and array inference |
 | **SVG Format** | Conversion | Format SVG source code, normalizing `fill` / `stroke` colors to `currentColor` for easy icon component authoring |
 | **Secret Generator** | Security | Generate AES keys (CBC/GCM), strong random passwords, UUID v4, and JWT secrets locally using the Web Crypto API |
@@ -55,6 +56,7 @@ Currently includes **9 developer utilities** across 5 categories:
 | **Image Preview** | Image | Single and multi-image preview gallery: view images via URL, local file upload, drag-and-drop, or clipboard paste |
 | **Random Avatar** | Fun | Generate Notion-style doodle avatars by randomly mixing facial features, hairstyles, and color palettes; export to SVG/PNG |
 | **Funny Nickname** | Fun | Nickname generator: batch produce humorous Chinese and English nicknames across foodie, slacker, tech meme, and honorific themes |
+| **Cookie Parser** | DevTools | Parse pasted cookie strings (Request Cookie, Set-Cookie response header, or JSON) into structured JSON or table view |
 
 ---
 

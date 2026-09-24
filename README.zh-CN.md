@@ -42,10 +42,11 @@
 
 ## 🛠️ 内置工具清单
 
-目前已收录 **9 款常用实用工具**，涵盖 5 大分类：
+目前已收录 **11 款常用实用工具**，涵盖 5 大分类：
 
 | 工具名称 | 分类 | 说明 |
 |---|---|---|
+| **Base64 To PNG** | 格式转换 | Base64 与 PNG 图片互相转换：支持纯 Base64 / Data URL 解析并一键导出 PNG、尺寸与大小分析、透明棋盘格预览及剪贴板复制 |
 | **YAML To DTS** | 格式转换 | 将 YAML 配置内容转换为对应的 TypeScript 类型声明（`.d.ts`），支持嵌套对象与数组推导 |
 | **SVG Format** | 格式转换 | 格式化 SVG 源码，将 `fill` / `stroke` 颜色统一替换为 `currentColor`，便于封装为通用图标组件 |
 | **Secret Generator** | 安全加密 | 基于 Web Crypto API 本地生成 AES 密钥（CBC/GCM）、高强度随机密码、UUID v4 与 JWT Secret |
@@ -55,6 +56,7 @@
 | **Image Preview** | 图片处理 | 单图预览与多图画廊浏览：支持输入图片 URL、本地文件上传、拖拽或剪贴板粘贴直接查看 |
 | **Random Avatar** | 趣味生成 | 生成 Notion 简笔画风格头像，支持五官、发型、配色的随机拼装或单独重掷，支持导出 SVG/PNG |
 | **Funny Nickname** | 趣味生成 | 注册取名救星：批量生成沙雕中文网名与搞笑英文网名（吃货系、摆烂系、技术梗、头衔梗等） |
+| **Cookie Parser** | 开发辅助 | 将复制来的 Cookie 文本（请求 Cookie、Set-Cookie 响应头或 JSON）解析为结构化 JSON 或表格视图 |
 
 ---
 
