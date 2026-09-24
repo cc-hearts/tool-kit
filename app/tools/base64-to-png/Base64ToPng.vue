@@ -440,42 +440,191 @@ function onP2bDrop(event: DragEvent) {
     message.warning('拖入的文件中未找到支持的图片')
 }
 
-const p2bPureBase64 = computed(() => {
+// 截断渲染阈值（字符数）：超过此大小启用切片预览，避免 DOM 渲染数百万字符导致浏览器假死
+const LARGE_TEXT_THRESHOLD = 8000
+const PREVIEW_HEAD_LEN = 1200
+const PREVIEW_TAIL_LEN = 400
+
+const isFullTextMode = ref(false)
+
+function getPureBase64Offset(dataUrl: string): number {
+  const match = /^data:image\/[a-z0-9+.-]+;base64,/i.exec(dataUrl)
+  return match ? match[0].length : 0
+}
+
+const p2bPureBase64Length = computed(() => {
   if (!p2bDataUrl.value)
-    return ''
-  return p2bDataUrl.value.replace(/^data:image\/[a-z0-9+.-]+;base64,/i, '')
+    return 0
+  const offset = getPureBase64Offset(p2bDataUrl.value)
+  return p2bDataUrl.value.length - offset
 })
 
-const p2bHtmlTag = computed(() => {
-  if (!p2bDataUrl.value)
-    return ''
-  return `<img src="${p2bDataUrl.value}" alt="${p2bImageFile.value?.name || 'image'}" />`
-})
-
-const p2bCssBackground = computed(() => {
-  if (!p2bDataUrl.value)
-    return ''
-  return `background-image: url('${p2bDataUrl.value}');`
-})
-
-const currentFormatValue = computed(() => {
+const currentFormatLength = computed(() => {
+  const urlLen = p2bDataUrl.value.length
+  if (!urlLen)
+    return 0
+  const name = p2bImageFile.value?.name || 'image'
   switch (p2bActiveFormat.value) {
     case 'dataUrl':
-      return p2bDataUrl.value
+      return urlLen
     case 'pure':
-      return p2bPureBase64.value
+      return p2bPureBase64Length.value
     case 'img':
-      return p2bHtmlTag.value
+      return urlLen + '<img src="" alt="" />'.length + name.length
     case 'css':
-      return p2bCssBackground.value
+      return urlLen + 'background-image: url(\'\');'.length
   }
 })
 
+const isTextTruncated = computed(() => {
+  return currentFormatLength.value > LARGE_TEXT_THRESHOLD && !isFullTextMode.value
+})
+
+/**
+ * 格式代码切片渲染：
+ * 巨型图片 Base64 往往达几兆甚至几十兆字符，全量挂载至 textarea 会造成浏览器主线程严重布局卡顿（Jank）。
+ * 此处采用虚拟切片机制：仅渲染首尾片段供肉眼确认格式，一键复制依然完整复制全部数据。
+ */
+const displayFormatValue = computed(() => {
+  const url = p2bDataUrl.value
+  if (!url)
+    return ''
+
+  const offset = getPureBase64Offset(url)
+  const name = p2bImageFile.value?.name || 'image'
+  const isTruncated = isTextTruncated.value
+
+  if (!isTruncated) {
+    switch (p2bActiveFormat.value) {
+      case 'dataUrl':
+        return url
+      case 'pure':
+        return url.slice(offset)
+      case 'img':
+        return `<img src="${url}" alt="${name}" />`
+      case 'css':
+        return `background-image: url('${url}');`
+    }
+  }
+
+  // 极速预览模式：仅截取首尾片段
+  switch (p2bActiveFormat.value) {
+    case 'dataUrl': {
+      const head = url.slice(0, PREVIEW_HEAD_LEN)
+      const tail = url.slice(-PREVIEW_TAIL_LEN)
+      const omitted = url.length - PREVIEW_HEAD_LEN - PREVIEW_TAIL_LEN
+      return `${head}\n\n/* ... [已开启极速预览：自动省略中间 ${omitted.toLocaleString()} 字符，点击「一键复制」获取完整内容] ... */\n\n${tail}`
+    }
+    case 'pure': {
+      const head = url.slice(offset, offset + PREVIEW_HEAD_LEN)
+      const tail = url.slice(-PREVIEW_TAIL_LEN)
+      const pureLen = url.length - offset
+      const omitted = pureLen - PREVIEW_HEAD_LEN - PREVIEW_TAIL_LEN
+      return `${head}\n\n/* ... [已开启极速预览：自动省略中间 ${omitted.toLocaleString()} 字符，点击「一键复制」获取完整内容] ... */\n\n${tail}`
+    }
+    case 'img': {
+      const head = url.slice(0, PREVIEW_HEAD_LEN)
+      const tail = url.slice(-PREVIEW_TAIL_LEN)
+      const omitted = url.length - PREVIEW_HEAD_LEN - PREVIEW_TAIL_LEN
+      return `<img src="${head}\n\n/* ... [已开启极速预览：省略 ${omitted.toLocaleString()} 字符，点击「一键复制」获取完整代码] ... */\n\n${tail}" alt="${name}" />`
+    }
+    case 'css': {
+      const head = url.slice(0, PREVIEW_HEAD_LEN)
+      const tail = url.slice(-PREVIEW_TAIL_LEN)
+      const omitted = url.length - PREVIEW_HEAD_LEN - PREVIEW_TAIL_LEN
+      return `background-image: url('${head}\n\n/* ... [已开启极速预览：省略 ${omitted.toLocaleString()} 字符，点击「一键复制」获取完整代码] ... */\n\n${tail}');`
+    }
+  }
+})
+
+/** 一键复制完整内容（优先通过 Blob 流式写入剪贴板，彻底避免大字符串内存膨胀） */
 async function copyCurrentFormat() {
-  if (!currentFormatValue.value)
+  const url = p2bDataUrl.value
+  if (!url)
     return
-  await copyText(currentFormatValue.value)
-  message.success('已复制到剪贴板')
+
+  const offset = getPureBase64Offset(url)
+  const name = p2bImageFile.value?.name || 'image'
+
+  try {
+    if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+      let chunks: string[] = []
+      switch (p2bActiveFormat.value) {
+        case 'dataUrl':
+          chunks = [url]
+          break
+        case 'pure':
+          chunks = [url.slice(offset)]
+          break
+        case 'img':
+          chunks = ['<img src="', url, `" alt="${name}" />`]
+          break
+        case 'css':
+          chunks = [`background-image: url('`, url, `');`]
+          break
+      }
+      const blob = new Blob(chunks, { type: 'text/plain' })
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'text/plain': blob }),
+      ])
+      message.success('已完整复制到剪贴板！')
+      return
+    }
+
+    let fullText = ''
+    switch (p2bActiveFormat.value) {
+      case 'dataUrl': fullText = url; break
+      case 'pure': fullText = url.slice(offset); break
+      case 'img': fullText = `<img src="${url}" alt="${name}" />`; break
+      case 'css': fullText = `background-image: url('${url}');`; break
+    }
+    await copyText(fullText)
+    message.success('已完整复制到剪贴板！')
+  }
+  catch {
+    message.error('复制失败，受剪贴板权限或体积限制，可点击「导出文件」下载')
+  }
+}
+
+/** 超大文本直接另存为对应文件 */
+function downloadTextFile() {
+  const url = p2bDataUrl.value
+  if (!url)
+    return
+
+  const offset = getPureBase64Offset(url)
+  const name = (p2bImageFile.value?.name || 'image').replace(/\.[^.]+$/, '')
+  let chunks: string[] = []
+  let suffix = ''
+
+  switch (p2bActiveFormat.value) {
+    case 'dataUrl':
+      chunks = [url]
+      suffix = 'data-url.txt'
+      break
+    case 'pure':
+      chunks = [url.slice(offset)]
+      suffix = 'base64.txt'
+      break
+    case 'img':
+      chunks = ['<img src="', url, `" alt="${p2bImageFile.value?.name || 'image'}" />`]
+      suffix = 'img-tag.html'
+      break
+    case 'css':
+      chunks = [`background-image: url('`, url, `');`]
+      suffix = 'bg.css'
+      break
+  }
+
+  const blob = new Blob(chunks, { type: 'text/plain;charset=utf-8' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `${name}-${suffix}`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(a.href)
+  message.success(`已导出 ${name}-${suffix}`)
 }
 
 function clearP2b() {
@@ -815,7 +964,7 @@ onBeforeUnmount(() => {
               </span>
               <span>尺寸：{{ p2bWidth }} × {{ p2bHeight }} px</span>
               <span>原始体积：{{ formatBytes(p2bFileSize) }}</span>
-              <span>Base64 长度：{{ p2bPureBase64.length.toLocaleString() }} 字符</span>
+              <span>Base64 长度：{{ p2bPureBase64Length.toLocaleString() }} 字符</span>
             </div>
             <a-button danger size="small" class="mt-2" @click="clearP2b">
               <template #icon>
@@ -843,25 +992,56 @@ onBeforeUnmount(() => {
                 </a-radio-button>
               </a-radio-group>
 
-              <a-button type="primary" size="small" @click="copyCurrentFormat">
-                <template #icon>
-                  <Copy :size="13" />
-                </template>
-                一键复制
-              </a-button>
+              <div class="flex items-center gap-2">
+                <a-button
+                  v-if="currentFormatLength > LARGE_TEXT_THRESHOLD"
+                  size="small"
+                  @click="downloadTextFile"
+                >
+                  <template #icon>
+                    <Download :size="13" />
+                  </template>
+                  导出文件
+                </a-button>
+                <a-button type="primary" size="small" @click="copyCurrentFormat">
+                  <template #icon>
+                    <Copy :size="13" />
+                  </template>
+                  一键复制
+                </a-button>
+              </div>
             </div>
 
-            <a-textarea
-              :value="currentFormatValue"
-              readonly
-              :rows="8"
-              class="font-mono text-xs"
-            />
+            <div class="relative">
+              <a-textarea
+                :value="displayFormatValue"
+                readonly
+                :rows="8"
+                class="font-mono text-xs"
+              />
+              <div
+                v-if="currentFormatLength > LARGE_TEXT_THRESHOLD"
+                class="absolute right-2 top-2 z-10"
+              >
+                <a-tag
+                  color="blue"
+                  class="!m-0 cursor-pointer select-none text-xs"
+                  @click="isFullTextMode = !isFullTextMode"
+                >
+                  {{ isFullTextMode ? '已展开全文 (点击开启极速)' : '极速切片模式 (点击展开全文)' }}
+                </a-tag>
+              </div>
+            </div>
 
-            <div class="flex items-center justify-between text-xs text-muted-foreground">
-              <span>点击“一键复制”可直接拷走对应格式代码</span>
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+              <span v-if="isTextTruncated" class="text-blue-500">
+                ⚡ 已启用大文本极速渲染（仅渲染前后片段，一键复制与导出仍为 100% 完整字符）
+              </span>
+              <span v-else>
+                点击“一键复制”可直接拷走对应格式代码
+              </span>
               <a-button type="link" size="small" class="!p-0 text-xs" @click="copyCurrentFormat">
-                复制当前格式 ({{ currentFormatValue.length.toLocaleString() }} 字符)
+                复制当前格式 ({{ currentFormatLength.toLocaleString() }} 字符)
               </a-button>
             </div>
           </div>
