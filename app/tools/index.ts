@@ -1,5 +1,6 @@
 import type { ToolMeta } from './types'
 import { toolCategories } from './categories'
+import base64ToPng from './base64-to-png'
 import formatSvg from './format-svg'
 import imageCrop from './image-crop'
 import imagePreview from './image-preview'
@@ -14,6 +15,7 @@ import yamlToDts from './yaml-to-dts'
  * 新增工具：在 app/tools/<slug>/ 下创建 index.ts（defineTool 元信息）与视图组件，然后在这里追加一行。
  */
 export const tools: ToolMeta[] = [
+  base64ToPng,
   yamlToDts,
   formatSvg,
   secret,

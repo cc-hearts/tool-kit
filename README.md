@@ -42,10 +42,11 @@
 
 ## 🛠️ Included Tools
 
-Currently includes **8 developer utilities** across 5 categories:
+Currently includes **9 developer utilities** across 5 categories:
 
 | Tool | Category | Description |
 |---|---|---|
+| **Base64 To PNG** | Conversion | Bidirectional conversion between Base64 and PNG: parse raw Base64/Data URLs into PNG, analyze dimensions & size, preview on transparent chessboard, and copy or download with one click |
 | **YAML To DTS** | Conversion | Convert YAML configurations into TypeScript type declarations (`.d.ts`), supporting nested objects and array inference |
 | **SVG Format** | Conversion | Format SVG source code, normalizing `fill` / `stroke` colors to `currentColor` for easy icon component authoring |
 | **Secret Generator** | Security | Generate AES keys (CBC/GCM), strong random passwords, UUID v4, and JWT secrets locally using the Web Crypto API |
