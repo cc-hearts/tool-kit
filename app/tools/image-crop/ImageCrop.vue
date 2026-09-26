@@ -139,6 +139,15 @@ onBeforeUnmount(() => {
 
 /* ---------- 裁剪结果 → Canvas ---------- */
 
+/** 旋转后图像的包围盒尺寸，与 cropper 库内部算法保持一致 */
+function rotateSize(width: number, height: number, rotation: number) {
+  const rotRad = (rotation * Math.PI) / 180
+  return {
+    width: Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
+    height: Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height),
+  }
+}
+
 /**
  * 原图模式：按自然尺寸 1:1 重绘，不做任何裁剪、旋转或缩放，
  * 因此导出尺寸与源图完全一致（不依赖裁剪框的取整结果）。
@@ -171,31 +180,29 @@ function buildResultCanvas(flattenWhite: boolean) {
 }
 
 /**
- * 用足够容纳旋转后图像的正方形画布先「摆正」源图，
- * 再从其上截取裁剪框区域，与 cropper 预览保持一致。
+ * cropper 返回的 croppedAreaPixels 以「旋转后包围盒」为坐标系：
+ * 先把旋转后的图像画到与包围盒同尺寸的画布上（图像居中旋转），
+ * 再直接用 area.x/y 截取，即可与裁剪框所见保持一致。
  */
 function buildCroppedCanvas(area: Area, round: boolean, flattenWhite: boolean) {
   if (!sourceImage)
     return null
 
-  const maxSide = Math.max(sourceImage.naturalWidth, sourceImage.naturalHeight)
-  const safeSize = Math.round(maxSide * Math.SQRT2)
+  const naturalWidth = sourceImage.naturalWidth
+  const naturalHeight = sourceImage.naturalHeight
+  const bbox = rotateSize(naturalWidth, naturalHeight, rotation.value)
 
   const work = document.createElement('canvas')
-  work.width = safeSize
-  work.height = safeSize
+  work.width = Math.max(1, Math.round(bbox.width))
+  work.height = Math.max(1, Math.round(bbox.height))
   const workCtx = work.getContext('2d')
   if (!workCtx)
     return null
 
-  workCtx.translate(safeSize / 2, safeSize / 2)
+  workCtx.translate(work.width / 2, work.height / 2)
   workCtx.rotate((rotation.value * Math.PI) / 180)
-  workCtx.translate(-safeSize / 2, -safeSize / 2)
-  workCtx.drawImage(
-    sourceImage,
-    (safeSize - sourceImage.naturalWidth) / 2,
-    (safeSize - sourceImage.naturalHeight) / 2,
-  )
+  workCtx.translate(-naturalWidth / 2, -naturalHeight / 2)
+  workCtx.drawImage(sourceImage, 0, 0)
 
   const width = Math.max(1, Math.round(area.width))
   const height = Math.max(1, Math.round(area.height))
