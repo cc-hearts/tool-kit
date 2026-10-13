@@ -2,6 +2,7 @@ import type { ToolMeta } from './types'
 import { toolCategories } from './categories'
 import base64ToPng from './base64-to-png'
 import cookieParser from './cookie-parser'
+import fileDiff from './file-diff'
 import formatSvg from './format-svg'
 import imageCrop from './image-crop'
 import imagePreview from './image-preview'
@@ -19,6 +20,7 @@ import yamlToDts from './yaml-to-dts'
 export const tools: ToolMeta[] = [
   base64ToPng,
   yamlToDts,
+  fileDiff,
   formatSvg,
   secret,
   wordTranslation,

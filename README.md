@@ -42,7 +42,7 @@
 
 ## 🛠️ Included Tools
 
-Currently includes **11 developer utilities** across 5 categories:
+Currently includes **12 developer utilities** across 5 categories:
 
 | Tool | Category | Description |
 |---|---|---|
@@ -57,6 +57,7 @@ Currently includes **11 developer utilities** across 5 categories:
 | **Random Avatar** | Fun | Generate Notion-style doodle avatars by randomly mixing facial features, hairstyles, and color palettes; export to SVG/PNG |
 | **Funny Nickname** | Fun | Nickname generator: batch produce humorous Chinese and English nicknames across foodie, slacker, tech meme, and honorific themes |
 | **Cookie Parser** | DevTools | Parse pasted cookie strings (Request Cookie, Set-Cookie response header, or JSON) into structured JSON or table view |
+| **File Diff** | DevTools | Compare two texts or two local files with split/unified views and word-level inline highlighting — everything stays in the browser |
 
 ---
 
