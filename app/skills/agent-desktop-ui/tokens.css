@@ -1,0 +1,269 @@
+/**
+ * Agent Desktop UI Design Tokens
+ * Clean & Native Design Tokens
+ */
+
+:root,
+[data-theme="light"] {
+  /* Color Palette - Base */
+  --agent-sidebar: #eceef4;
+  --agent-card: #ffffff;
+  --agent-popover: #ffffff;
+  --agent-button-bg: #ffffff;
+
+  /* Typography Colors */
+  --agent-text: #1d1d1f;
+  --agent-text-muted: #6e6e78;
+  --agent-text-faint: #a3a3ad;
+
+  /* State & Interactive */
+  --agent-row-hover: rgba(0, 0, 0, 0.04);
+  --agent-row-selected: #ffffff;
+  --agent-row-sel-border: rgba(0, 0, 0, 0.05);
+  --agent-row-shadow: rgba(20, 20, 50, 0.08);
+
+  /* Form & Surface */
+  --agent-control: #ffffff;
+  --agent-control-hover: #f7f7f9;
+  --agent-divider: rgba(0, 0, 0, 0.06);
+  --agent-row-divider: rgba(0, 0, 0, 0.07);
+  --agent-chip: rgba(0, 0, 0, 0.045);
+  --agent-card-border: rgba(0, 0, 0, 0.07);
+  --agent-card-dim: rgba(255, 255, 255, 0.58);
+  --agent-veil: rgba(250, 248, 252, 0.28);
+
+  /* Semantic Colors */
+  --agent-accent: #3b6cf6;
+  --agent-accent-selection: rgba(59, 108, 246, 0.25);
+  --agent-attention: #c27b0f;
+  --agent-attention-soft: rgba(232, 154, 40, 0.13);
+  --agent-done: #1d1d1f;
+  --agent-on-done: #ffffff;
+  --agent-danger: #d93a35;
+  --agent-success: #22863a;
+
+  /* Terminal Colors */
+  --agent-term-bg: #ffffff;
+  --agent-term-fg: #1d1d1f;
+  --agent-term-cursor: #1d1d1f;
+  --agent-term-selection: #cfdcfb;
+
+  /* Overlays & Modals */
+  --agent-overlay: rgba(10, 10, 30, 0.12);
+  --agent-kbd-bg: rgba(0, 0, 0, 0.04);
+  --agent-kbd-border: rgba(0, 0, 0, 0.09);
+
+  /* Elevation Shadows */
+  --agent-shadow-raised: 0 1px 2px 0 rgba(0, 0, 0, 0.07), 0 1px 6px 0 rgba(0, 0, 0, 0.035);
+  --agent-shadow-chosen: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 0.5px 2px 0 rgba(0, 0, 0, 0.05);
+  --agent-shadow-control: 0 0.5px 1.5px 0 rgba(0, 0, 0, 0.13), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+  --agent-shadow-floating: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 16px 40px 0 rgba(20, 20, 40, 0.14);
+  --agent-shadow-menu: inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+                      inset 0 -1px 0 0 rgba(255, 255, 255, 0.9),
+                      inset 0 0 0 0.5px rgba(0, 0, 0, 0.3),
+                      0 5px 10px 0 rgba(0, 0, 0, 0.22);
+  --agent-menu-bg: linear-gradient(180deg, #fbfbfb, #f4f4f5);
+
+  /* Lit Edge (None in light mode) */
+  --agent-lit-edge-border: transparent;
+  --agent-lit-edge-gradient: none;
+}
+
+[data-theme="dark"] {
+  /* Color Palette - Base */
+  --agent-sidebar: #141418;
+  --agent-card: #232328;
+  --agent-popover: #232327;
+  --agent-button-bg: #404047;
+
+  /* Typography Colors */
+  --agent-text: #ececf0;
+  --agent-text-muted: #a9a9b4;
+  --agent-text-faint: #83838f;
+
+  /* State & Interactive */
+  --agent-row-hover: rgba(255, 255, 255, 0.05);
+  --agent-row-selected: rgba(255, 255, 255, 0.10);
+  --agent-row-sel-border: rgba(255, 255, 255, 0.06);
+  --agent-row-shadow: rgba(0, 0, 0, 0.25);
+
+  /* Form & Surface */
+  --agent-control: #404047;
+  --agent-control-hover: #4a4a52;
+  --agent-control-light: rgba(255, 255, 255, 0.09);
+  --agent-divider: rgba(255, 255, 255, 0.07);
+  --agent-row-divider: rgba(255, 255, 255, 0.07);
+  --agent-chip: rgba(255, 255, 255, 0.07);
+  --agent-card-border: rgba(255, 255, 255, 0.08);
+  --agent-card-dim: rgba(35, 35, 40, 0.5);
+  --agent-veil: rgba(14, 13, 18, 0.42);
+
+  /* Dark Edges */
+  --agent-edge: rgba(255, 255, 255, 0.075);
+  --agent-edge-high: rgba(255, 255, 255, 0.11);
+
+  /* Semantic Colors */
+  --agent-accent: #6b93ff;
+  --agent-accent-selection: rgba(107, 147, 255, 0.25);
+  --agent-attention: #f0a33a;
+  --agent-attention-soft: rgba(240, 163, 58, 0.15);
+  --agent-done: #ececf0;
+  --agent-on-done: #161618;
+  --agent-danger: #ff6961;
+  --agent-success: #4fd17a;
+
+  /* Terminal Colors */
+  --agent-term-bg: #232328;
+  --agent-term-fg: #e6e6ea;
+  --agent-term-cursor: #e6e6ea;
+  --agent-term-selection: #2f4170;
+
+  /* Overlays & Modals */
+  --agent-overlay: rgba(0, 0, 0, 0.35);
+  --agent-kbd-bg: rgba(255, 255, 255, 0.06);
+  --agent-kbd-border: rgba(255, 255, 255, 0.1);
+
+  /* Elevation Shadows */
+  --agent-shadow-raised: 0 1px 1px 0 rgba(0, 0, 0, 0.2),
+                        0 2px 2px -1px rgba(0, 0, 0, 0.2),
+                        0 4px 6px -3px rgba(0, 0, 0, 0.24);
+  --agent-shadow-chosen: var(--agent-shadow-raised);
+  --agent-shadow-control: var(--agent-shadow-raised);
+  --agent-shadow-floating: 0 1px 1px 0 rgba(0, 0, 0, 0.2),
+                          0 2px 2px -1px rgba(0, 0, 0, 0.2),
+                          0 4px 6px -3px rgba(0, 0, 0, 0.24),
+                          0 16px 40px 0 rgba(0, 0, 0, 0.45);
+  --agent-shadow-menu: inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+                      0 1px 3px 0 rgba(0, 0, 0, 0.25),
+                      0 4px 16px 0 rgba(0, 0, 0, 0.4);
+  --agent-menu-bg: #232327;
+
+  /* Lit Edge in Dark Mode */
+  --agent-lit-edge-border: 1px solid rgba(236, 236, 240, 0.12);
+  --agent-lit-edge-gradient: linear-gradient(180deg, rgba(236, 236, 240, 0.18), rgba(236, 236, 240, 0.06));
+}
+
+/* ========================================================
+   Window Background: Solid / Plain (Default & Preferred)
+   ======================================================== */
+
+/* 1. Plain (Default & Preferred solid appearance) */
+.agent-window-bg,
+.agent-wash-plain {
+  background: var(--agent-sidebar);
+}
+
+/* ========================================================
+   Optional Background Wash Gradients (Oklab Interpolation)
+   ======================================================== */
+
+/* 2. Rex (Lavender / Rose / Butter cream) */
+.agent-wash-rex {
+  background: linear-gradient(180deg, #ebe0f3, #f3e7f1, #f7eee4, #f6efcf);
+  position: relative;
+}
+.agent-wash-rex::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(225deg, rgba(247, 220, 241, 0.75) 0%, rgba(247, 220, 241, 0) 50%);
+}
+[data-theme="dark"] .agent-wash-rex {
+  background: linear-gradient(180deg, #17141f, #191620, #1b1916);
+}
+[data-theme="dark"] .agent-wash-rex::after {
+  background: linear-gradient(225deg, rgba(120, 70, 120, 0.22) 0%, rgba(120, 70, 120, 0) 50%);
+}
+
+/* 3. Mist (Cool Slate Blue) */
+.agent-wash-mist {
+  background: linear-gradient(180deg, #e3e9f4, #ebeff6, #f1f2f3, #f2f1ec);
+  position: relative;
+}
+.agent-wash-mist::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(225deg, rgba(210, 225, 248, 0.75) 0%, rgba(210, 225, 248, 0) 50%);
+}
+[data-theme="dark"] .agent-wash-mist {
+  background: linear-gradient(180deg, #12151b, #14171d, #17181b);
+}
+[data-theme="dark"] .agent-wash-mist::after {
+  background: linear-gradient(225deg, rgba(70, 100, 150, 0.22) 0%, rgba(70, 100, 150, 0) 50%);
+}
+
+/* 3. Meadow (Fresh Meadow Green) */
+.agent-wash-meadow {
+  background: linear-gradient(180deg, #e2eee5, #ebf2e7, #f3f2e2, #f5f0d6);
+  position: relative;
+}
+.agent-wash-meadow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(225deg, rgba(214, 240, 222, 0.75) 0%, rgba(214, 240, 222, 0) 50%);
+}
+[data-theme="dark"] .agent-wash-meadow {
+  background: linear-gradient(180deg, #111814, #141a16, #181a14);
+}
+[data-theme="dark"] .agent-wash-meadow::after {
+  background: linear-gradient(225deg, rgba(70, 130, 95, 0.2) 0%, rgba(70, 130, 95, 0) 50%);
+}
+
+/* 5. Dusk (Sunset Rose / Warm Peach) */
+.agent-wash-dusk {
+  background: linear-gradient(180deg, #e4dbf3, #efdeee, #f6e3dc, #f7e6cf);
+  position: relative;
+}
+.agent-wash-dusk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(225deg, rgba(246, 206, 222, 0.8) 0%, rgba(246, 206, 222, 0) 50%);
+}
+[data-theme="dark"] .agent-wash-dusk {
+  background: linear-gradient(180deg, #191321, #1e161e, #221a17);
+}
+[data-theme="dark"] .agent-wash-dusk::after {
+  background: linear-gradient(225deg, rgba(150, 80, 110, 0.25) 0%, rgba(150, 80, 110, 0) 50%);
+}
+
+/* ========================================================
+   Common Radii, Spacing & Motion Specs
+   ======================================================== */
+:root {
+  --agent-radius-card: 14px;
+  --agent-radius-group: 12px;
+  --agent-radius-control: 7px;
+  --agent-radius-button: 8px;
+  --agent-radius-thumb: 5px;
+  --agent-radius-capsule: 9999px;
+
+  --agent-gap-card: 8px;
+  --agent-gap-pane: 8px;
+  --agent-bar-height: 44px;
+  --agent-bar-mid: 30px;
+  --agent-top-bar: 60px;
+
+  /* Window Controls (Windows / Linux) */
+  --agent-win-btn-w: 28px;
+  --agent-win-btn-h: 26px;
+  --agent-win-btn-gap: 2px;
+  --agent-win-btn-right: 18px; /* CardGap (8px) + 10px */
+
+  /* Dialog & Modal Geometry */
+  --agent-dialog-max-w: 820px;
+  --agent-dialog-max-h: 620px;
+  --agent-dialog-margin: 12px;
+  --agent-modal-w: 430px;
+  --agent-palette-w: 560px;
+  --agent-palette-max-h: 460px;
+
+  --agent-spring-toggle: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --agent-ease-chrome: cubic-bezier(0.25, 1, 0.5, 1);
+}

@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import { Sparkles, Wrench } from 'lucide-vue-next'
+import { Boxes, Sparkles, Wrench } from 'lucide-vue-next'
 
 /**
  * 站点栏目清单 —— 顶部 tab 导航的唯一数据源。
@@ -45,6 +45,15 @@ export const sections: Section[] = [
     match: ['/prompts'],
     icon: Sparkles,
     description: '可复用的提示词模板库，按场景整理，复制即用。',
+    ready: true,
+  },
+  {
+    key: 'skills',
+    label: '技能库',
+    to: '/skills',
+    match: ['/skills'],
+    icon: Boxes,
+    description: 'Agent 桌面应用设计体系与技能库，包含沉淀的跨平台规范、Design Tokens 及交互式演示 Demo。',
     ready: true,
   },
 ]

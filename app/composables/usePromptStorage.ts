@@ -2,7 +2,8 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { INITIAL_PROMPTS } from '~/prompts/data'
 import type { PromptItem } from '~/prompts/types'
 
-const STORAGE_KEY = 'cc_toolkit_prompts_v1'
+const STORAGE_KEY = 'cc_toolkit_prompts_v2'
+const OLD_STORAGE_KEY = 'cc_toolkit_prompts_v1'
 
 // 全局单例响应式引用，避免多处调用 usePromptStorage 时数据不一致
 const promptsState = ref<PromptItem[]>([...INITIAL_PROMPTS])
@@ -24,14 +25,34 @@ export function usePromptStorage() {
     if (isLoaded.value)
       return
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
+      // 检查当前版本缓存
+      let stored = localStorage.getItem(STORAGE_KEY)
+      // 若无 v2 缓存，尝试从 v1 迁移（但只保留用户自创的 custom prompt，坚决丢弃旧版废弃的 demo）
+      if (!stored && localStorage.getItem(OLD_STORAGE_KEY)) {
+        try {
+          const oldData = JSON.parse(localStorage.getItem(OLD_STORAGE_KEY) || '[]')
+          if (Array.isArray(oldData)) {
+            const userCustomOnly = oldData.filter((p: PromptItem) => p.id.startsWith('custom-') || p.author === '自定义')
+            promptsState.value = [...INITIAL_PROMPTS, ...userCustomOnly]
+            persist()
+            localStorage.removeItem(OLD_STORAGE_KEY)
+            isLoaded.value = true
+            return
+          }
+        }
+        catch {
+          // ignore
+        }
+      }
+
       if (stored) {
         const parsed = JSON.parse(stored)
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // 合并最新内置预设中新增的项（如双拼海报等）
-          const existingIds = new Set(parsed.map((p: PromptItem) => p.id))
-          const newPresets = INITIAL_PROMPTS.filter(p => !existingIds.has(p.id))
-          promptsState.value = [...newPresets, ...parsed]
+          // 保留当前合法的 INITIAL_PROMPTS 以及用户自定义 prompt，过滤掉老旧的已删除 demo
+          const initialIds = new Set(INITIAL_PROMPTS.map(p => p.id))
+          const validInitial = INITIAL_PROMPTS
+          const userCustom = parsed.filter((p: PromptItem) => !initialIds.has(p.id) && (p.id.startsWith('custom-') || p.author === '自定义'))
+          promptsState.value = [...validInitial, ...userCustom]
         }
       }
     }
