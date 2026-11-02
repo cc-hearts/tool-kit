@@ -3,12 +3,12 @@ name: agent-desktop-ui
 description: >-
   Design system, UI component specifications, layout architecture, color palette, dark mode tokens,
   and elevation system for modern desktop agent tools. Use whenever designing, building, or styling applications
-  following modern Agent desktop tools, macOS-native aesthetic, floating card layout, inset grouped settings, or custom color wash gradients.
+  following modern Agent desktop tools, macOS-native aesthetic, Windows 11 precision chrome, Acrylic primary vibrancy, floating card layout, inset grouped settings, or term-fleet floating overlays.
 ---
 
 # Agent Desktop UI Design System & Implementation Guide
 
-This skill encapsulates the complete design system and UI engineering standards of modern desktop agent tools. It merges **macOS Human Interface Guidelines (HIG)**, **Mitchell Hashimoto's Rex aesthetic**, and modern developer tool refinement.
+This skill encapsulates the complete design system and UI engineering standards of modern desktop agent tools (derived from **term-fleet** and **macOS Human Interface Guidelines / Windows 11 Fluent Principles**). It merges **macOS HIG**, **Mitchell Hashimoto's Rex aesthetic**, and modern developer tool refinement.
 
 When designing or building applications following this system, adhere strictly to the tokens, geometry, and component behaviors outlined below.
 
@@ -16,17 +16,35 @@ When designing or building applications following this system, adhere strictly t
 
 ## 1. Core Philosophy & Aesthetic Principles
 
-1. **Floating Card Canvas**: Windows do not use edge-to-edge flat panels or dividing border lines. The primary content and terminal views live on **rounded floating cards (`14px` radius)** that maintain a strict `8px` perimeter gap (`cardGap`) away from all window outer frames and the sidebar.
-2. **Solid Background First (Plain by Default)**: The window background **defaults to and prioritizes a clean, distraction-free solid color** (`#eceef4` in light mode, `#141418` in dark mode). This ensures maximum visual contrast and keeps focus strictly on the active terminal cards and code. Optional color wash gradients (Rex, Mist, Meadow, Dusk) are available for personalized themes and interpolate smoothly in **Oklab color space**. When system translucency (Vibrancy) is enabled, the solid base gracefully allows desktop wallpaper luminance to breathe through (`alpha: 0.82 ~ 0.95`).
-3. **Borderless Elevation**: In light mode, **avoid harsh 1px black stroke borders** (`border: none`); surfaces stand out via compound subtle shadows. Do not place horizontal dividing lines under the titlebar, vertical borders between the sidebar and canvas, or borderlines above the sidebar footer. In dark mode, employ a top-lit hairline (**Lit Edge**) over tight shadows.
-4. **Unified macOS Structure**: Traffic lights (Close, Minimize, Maximize) live in the top-left of the sidebar (inside its 44px header), aligning horizontally with the card's internal header.
-5. **AppKit-Grade Micro-Interactions**: Controls feature native macOS tactile feedback—including spring physics on toggles, lens enlargement on sliders, hard-edged scroll frosts, and popups that open directly over their trigger button.
+1. **Subtractive & Focused Aesthetic (减法设计)**:
+   - Avoid excessive decorative color wash gradients. Focus squarely on **Acrylic Frosted Vibrancy (✨ 亚克力磨砂)** as the primary hero material, paired with a clean **Plain (纯色专注)** solid contrast mode.
+   - Backgrounds are designed to serve content, keeping developer focus strictly on the active terminal cards and code.
+2. **Acrylic Frosted Vibrancy as Primary Material**:
+   - The system integrates native vibrancy (`NSVisualEffectView` on macOS, Acrylic on Windows 11).
+   - **Four-Tier Vibrancy Scale**:
+     - `none` (无模糊): `0px` (纯色专注模式)
+     - `subtle` (柔和): `14px` (macOS `VibrancySidebar`)
+     - `medium` (标准): `24px` (macOS `VibrancyPopover`)
+     - `deep` / `acrylic` (强力 / 亚克力主色): `36px` 模糊 + `185%` 饱和度提亮 (macOS `VibrancyAcrylic` / Win11 Acrylic)
+   - **Background Opacity Slider**: Range `30% ~ 100%` (default `78%`), providing real-time luminance regulation without degrading text contrast.
+   - **Single-Layer Translucency**: Terminal cards maintain clean single-layer composition (`rgba` alpha fill over transparent backing), preventing muddy multi-layer stacking so wallpaper luminance cleanly diffuses through.
+3. **Floating Card Canvas**: Windows do not use edge-to-edge flat panels or dividing border lines. The primary content lives on **rounded floating cards (`14px` radius)** maintaining a strict `8px` perimeter gap (`cardGap`) away from outer frames and the sidebar.
+4. **Borderless Elevation**: In light mode, **avoid harsh 1px black stroke borders** (`border: none`); surfaces stand out via compound subtle drop shadows. In dark mode, employ a top-lit hairline (**Lit Edge**: `border: 1px solid rgba(236,236,240,0.12)`, 180° gradient from 18% to 6%) over tight multi-layer shadows.
+5. **Windows 11 Precision Chrome & Vertical Centering (`items-center`)**:
+   - macOS: AppKit native inset traffic lights (Close, Minimize, Zoom) live in the top-left of the sidebar (inside its 44px header at `X: 18, Y: 23`).
+   - Windows 11:
+     - Top-right window controls: `28px (W) × 26px (H)`, `2px` gap, `4px` corner radius (`radiusSmall`), pinned at `right: 18px` (`cardGap + 10px`), and strictly **vertically centered with `items-center`** on the 44px top bar.
+     - Close Button Icon: Precise Lucide 16×16 diagonal cross (`<path d="M18 6 6 18"/><path d="m6 6 12 12"/>`). On hover and press, switches instantly to `pal.Danger` (`#d93a35` in light, `#ff6961` in dark) with a pure white glyph (`#ffffff`).
+     - Card Header Clearance: Card header strictly reserves `106px` right clearance (`padding-right: 106px`), ensuring chips, status badges ("Agent Active"), and tools never collide with the window buttons.
+6. **Term-Fleet Aligned Floating Surfaces**:
+   - **Floating Settings Window**: Completely transparent backdrop (`backdrop.Background(ui.Transparent)`)—no darkening scrim! Workspace terminals stay 100% visible. The dialog uses a two-column layout with an embedded elevated card on the right and a rigid drag header with dirty state detection.
+   - **Action Confirm Modals**: Dimmed scrim overlay, 430px fixed width, elevated floating panel with Esc/Enter keyboard mappings.
+   - **Command Palette (⌘K)**: Inset 84px from top, 600px width, 50px search header.
+   - **Popovers & Context Pickers**: 320px width, 14px radius, elevated floating panel placed directly over triggers.
 
 ---
 
 ## 2. Color System & Palettes
-
-All colors are paired with their exact hexadecimal or RGBA values across Light and Dark appearances.
 
 ### 2.1 Base Surface & Typography
 
@@ -58,43 +76,14 @@ All colors are paired with their exact hexadecimal or RGBA values across Light a
 | `success` | `#22863a` | `#4fd17a` | Active fleet status, connected relay, healthy process |
 | `overlay` | `rgba(10, 10, 30, 0.12)` | `rgba(0, 0, 0, 0.35)` | Dialog & modal backdrop tint |
 
-### 2.3 Terminal 16-Color Palette (Apple Tuned)
+### 2.3 Acrylic Vibrancy Surface Tokens
 
-Derived from Apple's system palette tuned to read sharply against the card surface (`#ffffff` light, `#232328` dark):
-
-| Color Index | Light Hex | Dark Hex | Role |
+| Token | Light Mode | Dark Mode | Usage |
 | :--- | :--- | :--- | :--- |
-| **0 (Black)** | `#1d1d1f` | `#3a3a40` | Base black / background dark shade |
-| **1 (Red)** | `#d3302f` | `#ff6b64` | Standard error / git deleted |
-| **2 (Green)** | `#22863a` | `#4fd17a` | Git added / success / prompt branch |
-| **3 (Yellow)** | `#b08800` | `#f2c14e` | Warnings / commit sha |
-| **4 (Blue)** | `#2f5bd8` | `#6b9bff` | Directories / info |
-| **5 (Magenta)** | `#a033c4` | `#d07cf0` | Keywords / language symbols |
-| **6 (Cyan)** | `#0f8199` | `#4cc9e0` | Special characters / links |
-| **7 (White)** | `#8e8e93` | `#c9c9cf` | Light grey / foreground mute |
-| **Selection** | `#cfdcfb` | `#2f4170` | Text highlight selection background |
-
-### 2.4 Window Background Appearance (Plain Preferred + 4 Washes)
-
-The design system prioritizes a **quiet, solid background by default** to minimize eye strain and preserve maximum content hierarchy. Decorative wash gradients remain supported as user-selectable options.
-
-1. **Plain (Solid, Default & Preferred)**:
-   - Light: `#eceef4` (no glow)
-   - Dark: `#141418` (no glow)
-   - With Vibrancy enabled: background alpha adjusts to `0.82` (light) or `0.88` (dark) to allow subtle desktop material to show through.
-
-2. **Rex (Optional Wash - Lavender, rose, and butter cream)**:
-   - Light Base: `['#ebe0f3', '#f3e7f1', '#f7eee4', '#f6efcf']` | Glow: `rgba(247, 220, 241, 0.75)`
-   - Dark Base: `['#17141f', '#191620', '#1b1916']` | Glow: `rgba(120, 70, 120, 0.22)`
-3. **Mist (Optional Wash - Cool slate blue)**:
-   - Light Base: `['#e3e9f4', '#ebeff6', '#f1f2f3', '#f2f1ec']` | Glow: `rgba(210, 225, 248, 0.75)`
-   - Dark Base: `['#12151b', '#14171d', '#17181b']` | Glow: `rgba(70, 100, 150, 0.22)`
-4. **Meadow (Optional Wash - Fresh grass green)**:
-   - Light Base: `['#e2eee5', '#ebf2e7', '#f3f2e2', '#f5f0d6']` | Glow: `rgba(214, 240, 222, 0.75)`
-   - Dark Base: `['#111814', '#141a16', '#181a14']` | Glow: `rgba(70, 130, 95, 0.2)`
-5. **Dusk (Optional Wash - Sunset rose & peach)**:
-   - Light Base: `['#e4dbf3', '#efdeee', '#f6e3dc', '#f7e6cf']` | Glow: `rgba(246, 206, 222, 0.8)`
-   - Dark Base: `['#191321', '#1e161e', '#221a17']` | Glow: `rgba(150, 80, 110, 0.25)`
+| `acrylicBg` | `rgba(236, 238, 244, 0.78)` | `rgba(20, 20, 24, 0.78)` | Window base under-surface with backdrop blur |
+| `acrylicCard` | `rgba(255, 255, 255, 0.85)` | `rgba(35, 35, 40, 0.82)` | Translucent floating terminal/content card |
+| `acrylicPopover`| `rgba(255, 255, 255, 0.90)`| `rgba(35, 35, 39, 0.90)` | Floating dialogs, menus, and command palettes |
+| `acrylicTint` | `rgba(255, 255, 255, 0.45)` | `rgba(255, 255, 255, 0.08)` | Highlight glow wash overlay |
 
 ---
 
@@ -110,9 +99,12 @@ Surfaces are elevated using whole-pixel crisp bounds.
   ```
 - **Dark (Lit Edge + Dark Shadow)**:
   ```css
-  border: 1px solid rgba(236, 236, 240, 0.12);
-  border-image: linear-gradient(180deg, rgba(236, 236, 240, 0.18), rgba(236, 236, 240, 0.06)) 1;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2),
+  /* 注意：在 CSS 标准规范中，border-image 会覆盖并禁用 border-radius 导致直角！
+     在 Web/Electron/CSS 渲染层，必须使用 border + inset box-shadow 绘制 Lit Edge，
+     既完美呈现 18% 顶光下射反射，又严格维持 14px/8px 圆角与硬件裁剪：*/
+  border: 1px solid rgba(236, 236, 240, 0.10);
+  box-shadow: inset 0 1px 0 0 rgba(236, 236, 240, 0.18),
+              0 1px 1px 0 rgba(0, 0, 0, 0.2),
               0 2px 2px -1px rgba(0, 0, 0, 0.2),
               0 4px 6px -3px rgba(0, 0, 0, 0.24);
   ```
@@ -142,15 +134,17 @@ Surfaces are elevated using whole-pixel crisp bounds.
               0 4px 16px 0 rgba(0, 0, 0, 0.4);
   ```
 
-### 3.4 Floating (Command Palette, Confirm Dialogs)
-- **Light**: `box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 16px 40px 0 rgba(20, 20, 40, 0.14);`
+### 3.4 Floating (Settings Dialog, Command Palette, Modals)
+- **Light**:
+  ```css
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07),
+              0 16px 40px 0 rgba(20, 20, 40, 0.14);
+  ```
 - **Dark**: Lit Edge + `box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 2px 2px -1px rgba(0,0,0,0.2), 0 4px 6px -3px rgba(0,0,0,0.24), 0 16px 40px 0 rgba(0, 0, 0, 0.45);`
 
 ---
 
-## 4. Cross-Platform Window Frame & Window Controls
-
-To deliver a true desktop-native feel across OS environments, window chrome MUST diverge between macOS and Windows/Linux. Do not render generic pseudo-Mac traffic lights on Windows, and do not draw duplicate close buttons on macOS.
+## 4. Cross-Platform Window Frame & Window Controls (macOS vs Windows 11)
 
 ```
 macOS Frame (AppKit System Traffic Lights on Left)
@@ -158,238 +152,76 @@ macOS Frame (AppKit System Traffic Lights on Left)
 │ [•][•][•] (X:18, Y:23)     Card Header      Card Tools │
 └────────────────────────────────────────────────────────┘
 
-Windows / Linux Frame (Custom Precision Flat Buttons on Right)
-┌────────────────────────────────────────────────────────┐
-│ App Icon / Title           Card Header    [-] [□] [×]  │
-│                                           (W:28, H:26) │
-└────────────────────────────────────────────────────────┘
+Windows / Linux Frame (Precision Flat Buttons on Right + Reserved Header Room + items-center)
+┌──────────────────────────────────────────────────────────────────────────┐
+│ [Icon] Term Fleet          Card Header      Card Tools    [-] [□] [×]    │
+│ (Lead: 12px)                                (Pr: 106px)   (W:28, H:26)   │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### 4.1 macOS Frame (Native Inset Traffic Lights)
-- **Window Configuration**:
-  ```go
-  o.TitleBarStyle = mygo.TitleBarHiddenInset
-  o.TrafficLightPosition = &mygo.Point{X: 18, Y: uitokens.TopBar/2 - 7} // X:18, Y:23
-  ```
-- **AppKit Native Integrity**:
-  - The three dots (Close, Minimize, Zoom) are drawn entirely by macOS AppKit, preserving OS-native hover icons, color nuances, and disabled greying when unfocused.
-  - **No Duplicate Controls**: Never draw a custom close or minimize icon on macOS in the top chrome.
-- **Header Lead & Spacing**:
-  - The view lays out its content around `c.TitleBar.Left`.
-  - Leading content must start at `titleBarLead = TitleBar.Left + 8px` (default fallback `12px`), guaranteeing zero collision with the system traffic lights.
+- AppKit native traffic lights positioned at `X: 18, Y: 23` in the sidebar header.
+- Header title lead starts at `titleBarLead = TitleBar.Left + 8px` (~76px).
+- Zero duplicate custom window buttons drawn on macOS.
 
-### 4.2 Windows & Linux Frame (Precision Flat Controls)
-- **Window Configuration**:
-  ```go
-  o.TitleBarStyle = mygo.TitleBarHidden
-  o.HideWindowButtons = true
-  o.AutoHideMenuBar = true // Menu bar hides until Alt is pressed
-  ```
-- **Control Group Geometry**:
-  - Position: Absolute pinned at top-right:
-    ```go
-    Right: uitokens.CardGap + 10 // 18px from right edge
-    Top:   (uitokens.TopBar - 26) / 2 // 17px vertically centered on 60px bar
-    ```
-  - Layout: `Height: 26px`, `Gap: 2px`, `AlignItems: Center`.
-  - Individual Button Size: `28px (width) × 26px (height)`, `border-radius: 4px ~ 6px`.
-- **Three Button Behaviors**:
+### 4.2 Windows & Linux Frame (Precision Flat Controls & Header Clearance)
+- **Sidebar Top-Left Layout**:
+  - No pseudo-Mac traffic lights.
+  - Header starts at `titleBarLead = 12px` with app mark/icon and title (`Term Fleet`).
+- **Top-Right Control Group Geometry & Centering (`items-center`)**:
+  - Button container: `absolute right-[10px] top-0 bottom-0 my-auto flex h-[26px] items-center gap-[2px]`.
+  - Individual Button: `28px (width) × 26px (height)`, `border-radius: 4px` (`radiusSmall`).
+  - Strict internal centering: `display: flex; align-items: center; justify-content: center;`.
+- **Three Button Behaviors (term-fleet 规范)**:
   1. **Minimize**:
-     - SVG Glyph: `<path d="M5 12h14"/>` (Lucide 24-unit grid).
-     - Hover: `pal.RowHover`, Text: `pal.Text`.
+     - SVG: `<path d="M5 12h14"/>` (Lucide 16×16 grid).
+     - Hover: `pal.RowHover`.
   2. **Maximize / Restore**:
-     - State-aware icon:
-       - Normal: `<rect width="14" height="14" x="5" y="5" rx="2"/>` (Maximize).
-       - Maximized: Double overlapping squares `<rect width="10" height="10" x="9" y="9" rx="1.5"/>...` (Restore).
-     - **Windows 11 Snap Layouts**: MUST attach native maximize behavior (e.g. `b.MaximizeButton()`). On Windows 11, hovering over this button automatically invokes the OS Snap Layouts popup; regular tooltips must be suppressed to avoid obscuring snap presets.
+     - Normal: Single square `<rect width="14" height="14" x="5" y="5" rx="2"/>`.
+     - Maximized: Double overlapping squares `<rect width="10" height="10" x="9" y="9" rx="1.5"/>...`.
+     - Windows 11 Snap Layouts: hovering invokes the OS Snap Layouts popup.
   3. **Close (Dangerous Action)**:
-     - SVG Glyph: Standard diagonal cross (`iconClose`).
+     - SVG: Exact term-fleet Lucide 16×16 cross `<path d="M18 6 6 18"/><path d="m6 6 12 12"/>` with `stroke-width: 2`.
      - Normal: Quiet text color (`pal.TextMuted`).
-     - **Hover & Pressed**: Surface switches to `pal.Danger` (`#d93a35` in light, `#ff6961` in dark), and the cross glyph switches to pure white (`#ffffff`).
+     - **Hover & Pressed**: Surface switches to `pal.Danger` (`#d93a35` in light, `#ff6961` in dark), cross glyph switches to pure white (`#ffffff`).
+- **Card Header Clearance Rule**:
+  - Header right padding: `padding-right: var(--agent-win-header-pad-right, 106px);`.
+  - Guarantees zero collision between card tool chips ("Agent Active", "UTF-8", split controls) and the window buttons.
 
 ---
 
-## 5. Dialog & Modal Surfaces Architecture
+## 5. Dialog & Floating Surfaces Architecture (Term-Fleet Aligned)
 
-Agent desktop applications employ three distinct dialog archetypes depending on context and consequence.
+### 5.1 Type 1: Floating Settings Dialog (Transparent Backdrop, Rigid Drag & Embedded Card)
+- **No Darkening Scrim (`backdrop.Background(ui.Transparent)`)**: The shells and terminals behind it remain clearly visible for real-time comparison.
+- **Dimensions**: `780px ~ 820px` width, `550px ~ 620px` height, `Radius: 14px`, elevated with `floating` shadow.
+- **Rigid Draggable Header (44px)**:
+  - Drag handle with `items-center` alignment.
+  - Left: Title `Settings` (14px, 600) + dirty indicator pill `● Unsaved changes` (amber warning text).
+  - Right: `Restore defaults` button, `Apply` button (active when dirty), and `28 × 28px` close button.
+- **Interior Two-Column Structure**:
+  1. **Left Navigation Rail (`184px`)**:
+     - Top Search Row: `Height: 28px`, `Radius: 7px`, `Background: pal.Chip`.
+     - Navigation Items: `Height: 32px`, `Radius: 7px`, padding `0 10px`. Active row is raised with `pal.Card` background and `chosen` shadow.
+  2. **Right Content Area (Embedded Floating Card)**:
+     - Contains an independent elevated card: `Radius: 14px`, `Background: pal.Card`, elevated with `raised` shadow.
+     - Card Header: `Height: 44px`, `Padding: 0 18px`, `FontSize: 14.5px`, `FontWeight: 600`.
+     - Card Body: Grouped inset setting panels (`Radius: 12px`, `Background: pal.Chip`, vertical padding `4px`, horizontal padding `16px`).
+- **Status Footer (`34px`)**:
+  - `items-center` aligned, 1px top hairline, 6px status dot (green or red) + 11.5px text.
 
-```
-1. Floating Settings Dialog (No Scrim, Rigid Drag)
-┌────────────────────────────────────────────────────────┐
-│ ┌────────────────────────────────────────────────────┐ │
-│ │ ⠶ Settings (Draggable)            [Apply] [✕]      │ │ <- Transparent backdrop,
-│ │ ────────────────────────────────────────────────── │ │    workplace stays visible!
-│ │ Navigation   │ Settings Content Card               │ │
-│ └────────────────────────────────────────────────────┘ │
-└────────────────────────────────────────────────────────┘
+### 5.2 Type 2: Action & Confirmation Modal (reachDialog 风格)
+- Width `430px`, `Radius: 14px`, inner padding `20px`, elevated with `floating` shadow over `pal.Overlay` scrim.
 
-2. Action Confirm Modal (Scrim Overlay)   3. Command Palette (Top Inset)
-┌────────────────────────┐                ┌────────────────────────┐
-│ Delete Machine?        │                │ 🔍 Type a command...   │
-│ This action is final.  │                ├────────────────────────┤
-│         [Cancel] [OK]  │                │ > Session 1 · dev      │
-└────────────────────────┘                │ > Settings · Appearance│
-  (380px - 430px, Dim Scrim)              └────────────────────────┘
-```
+### 5.3 Type 3: Command Palette (palette_panel 风格)
+- Inset `84px` from top, width `600px`, max height `460px`, `Radius: 14px`, `50px` search header.
 
-### 5.1 Type 1: Floating Settings Dialog (Transparent Backdrop & Rigid Drag)
-- **Core Philosophy (No Scrim)**:
-  - Setting changes (appearance wash, terminal font, line height, theme colors) affect the active workspace directly.
-  - **No darkening scrim (`backdrop.Background(ui.Transparent)`)**: The dialog acts as an independent floating window. The shells and workspace behind it remain clearly visible for real-time visual comparison.
-- **Dimensions & Responsive Fitting**:
-  - `panelWidth = min(820, windowWidth - 64)`
-  - `panelHeight = min(620, windowHeight - 64)`
-  - Surface: `Radius: 14px`, `Clip()`, elevated with `floating` shadow, filled with the active window's `Wash.Base`.
-- **Rigid Draggable Header**:
-  - Header is the drag handle (`Height: 44px`, `Cursor: CursorGrab`).
-  - **Margin Bounds Rule**: Dragging must be bound to prevent the dialog from escaping the viewport:
-    ```go
-    dragBounds = ui.Rect{
-        X: 12 - (width - panelW)/2,
-        Y: 12 - (height - panelH)/2,
-        W: max(0, width - panelW - 24),
-        H: max(0, height - panelH - 24),
-    }
-    ```
-- **Header Actions & Close Button**:
-  - Left: Title `Settings` (`14px`, `font-weight: 600`, `pal.Text`).
-  - Right:
-    - Status marker: if dirty, display amber warning text `● Unsaved changes`.
-    - Secondary: `Restore defaults` button.
-    - Primary: `Apply` button (only enabled/offered when dirty).
-    - Close Icon Button: `28 × 28px` square button with `iconClose` (`size * 0.55`).
-
-### 5.2 Type 2: Action & Confirmation Modal (Scrim Overlay)
-- **Use Case**: Destructive actions (Restart daemon, Delete session, Reset configuration, Network takeover permission).
-- **Backdrop Scrim**: `pal.Overlay` (`rgba(10, 10, 30, 0.12)` in light, `rgba(0, 0, 0, 0.35)` in dark).
-- **Geometry**: Fixed width `380px ~ 430px`, `Radius: 14px`, inner padding `18px ~ 22px`, gap `8px ~ 10px`.
-- **Vertical Hierarchy**:
-  1. Title: `14px ~ 15px`, `font-weight: 600`, `pal.Text`.
-  2. Detail / Warning: `11px ~ 13px`, `pal.TextMuted`, `line-height: 1.4`.
-  3. Error banner (if active): `11px`, `pal.Danger`.
-  4. Button Row: Margined top `14px`, right-aligned (`Justify: End`), gap `8px`:
-     - Cancel button (mapped to `Esc`).
-     - Action button (mapped to `Enter`, marked primary or danger).
-
-### 5.3 Type 3: Command Palette (Floating Dropdown)
-- **Use Case**: `Cmd+K` / `Cmd+P` quick switcher for sessions, machines, and commands.
-- **Position**: Dropped `84px` from the window top, centered horizontally.
-- **Geometry**: Width `560px ~ 600px`, max height `460px`, `Radius: 14px`, `floating` shadow.
-- **Header Search Row**: `Height: 50px`, auto-focused 15px text field with search icon, no border.
-- **Interactive List**: Tracked scroll list, fuzzy match score ranking, keyboard arrow navigation (`Up/Down`, `Ctrl+P/N`), `Enter` to run, `Esc` to close.
+### 5.4 Type 4: Popovers & Quick Pickers (leasePopover 风格)
+- Width `320px`, `Radius: 14px`, padding `14px`, elevated with `floating` shadow.
 
 ---
 
-## 6. Settings View Architecture
-
-### 6.1 Window Geometry & Layout Architecture
-
-- **Window Dimensions**: `820 × 620` (Min: `700 × 480`, Default preview: `1060 × 720`).
-- **Unified Borderless Layout**:
-  - The window under-surface is by default a clean, distraction-free solid color (`#eceef4` in light mode, `#141418` in dark mode), with optional Oklab wash gradients available as user preferences.
-  - Do NOT divide the window with horizontal top lines or vertical sidebar lines.
-  - Left navigation sidebar: `212px` fixed width, full window height.
-  - Traffic lights (Close, Minimize, Zoom): located in the sidebar header at `height: 44px`, vertically centered at `y = 22px`, `padding-left: 14px`.
-- **Right Floating Content Card**:
-  - `14px` border-radius (`--agent-radius-card`).
-  - Strict `8px` perimeter gap (`--agent-gap-card`) on all 4 sides: top, right, bottom, and left (from sidebar).
-  - Inner scroll content constrained to `max-width: 620px ~ 640px`.
-  - Borderless elevation in light mode (`--agent-shadow-raised`), top-lit hairline in dark mode.
-- **Card Header & Dynamic Hard Scroll Edge**:
-  - Header bar: `44px` height (`barMid = 30px`, `cardGap = 8px`), aligns horizontally with sidebar header.
-  - Houses the view title, subtitle, and card tools (theme mode switcher, wash gradient selector, primary/secondary action buttons).
-  - Dynamic Hard Scroll Edge: when scrolled down (`Y > 0.5`), the header gains frosted backdrop-blur (`backdrop-filter: blur(16px)`) with a 160ms fade.
-- **Corner Preservation Rule (Backdrop-Filter Clipping Gotcha)**:
-  - In Chromium and WebKit, elements with `backdrop-filter` create an isolated GPU compositing surface that can bypass an ancestor's `overflow: hidden; border-radius`.
-  - **MANDATORY**: The `.card-header` element MUST explicitly declare:
-    ```css
-    border-top-left-radius: var(--agent-radius-card);
-    border-top-right-radius: var(--agent-radius-card);
-    ```
-  - **MANDATORY**: The parent `.agent-floating-card` container MUST declare:
-    ```css
-    isolation: isolate;
-    transform: translateZ(0);
-    ```
-    This ensures that when the user scrolls and the frosted glass header activates, the card's top rounded corners remain strictly preserved at `14px` without squaring off.
-
-### 6.2 Grouped Inset List Pattern
-```
-┌────────────────────────────────────────────────────────┐
-│ GROUP TITLE (12px, font-weight: 600, pal.textMuted)    │
-│ ┌────────────────────────────────────────────────────┐ │
-│ │ Setting Label 1                        [ Control ] │ │
-│ │ Optional description below label                   │ │
-│ │ ────────────────────────────────────────────────── │ │ <- 1px pal.text.Alpha(0.07)
-│ │ Setting Label 2                        [ Control ] │ │
-│ └────────────────────────────────────────────────────┘ │ <- Radius 12px, Background pal.chip
-│ Footer note (12px, pal.textFaint, line-height 1.4)     │
-└────────────────────────────────────────────────────────┘
-```
-- Group Panel: `Radius(12)`, `Background(pal.chip)`, vertical padding `4px`, horizontal padding `16px`.
-- Setting Row: vertical padding `11px`, gap `16px`, row height approx `44px`.
-- Dividers: `1px` high, placed between consecutive rows (never at top or bottom outer edge).
-
----
-
-## 7. Form Control Specifications
-
-### 7.1 Toggle Switch (`toggle`)
-- **Dimensions**: `38 × 22px`, `radius: 11px`, `padding: 2px`.
-- **Thumb**: `18 × 18px`, `radius: 9px`, `#ffffff`, shadow: `0 1px 2px rgba(0,0,0,0.22), 0 0 0 0.5px rgba(0,0,0,0.06)`.
-- **Physics**: Travels `16px`. Spring animation: `Duration: 260ms`, `Bounce: 0.15`.
-- **Track**: Inactive `pal.text.Alpha(0.14)` (dark: `0.20`), Active `pal.accent`.
-
-### 7.2 Segmented Control (`segmented`)
-- **Track**: `height: 24px`, `radius: 7px`, `padding: 2px`, background `rgba(0,0,0,0.06)` (dark: `rgba(255,255,255,0.07)`).
-- **Segment Thumb**: `radius: 5px`, `#ffffff`, shadow: `0 0.5px 1.5px rgba(0,0,0,0.16), 0 0 0 0.5px rgba(0,0,0,0.04)` (dark: `rgba(255,255,255,0.2)` with dark drop shadow).
-- **Separators**: `1px` wide, `12px` tall, hidden adjacent to selected segment.
-
-### 7.3 Pop-up Button (`popup`)
-- **Dimensions**: `height: 28px`, capsule `radius: 14px`, padding `0 3px 0 10px`, gap `6px`.
-- **Chevron Disc**: `22 × 22px` circle with `lucide-chevrons-up-down` icon (`16 × 16px`).
-- **Placement Logic**: The menu opens **directly over the button**, with the currently selected menu row aligning directly on top of the button text.
-
-### 7.4 Slider (`slider`)
-- **Dimensions**: `height: 24px`, track `height: 4px`, track radius `2px`.
-- **Thumb**: `20 × 16px`, capsule radius `8px`.
-- **Lens Effect**: When pressed (`held > 0`), the thumb expands by `35%` (`1 + 0.35 * held`) in `150ms`, transforming into a semi-transparent glass lens (`rgba(255,255,255,0.1)`) that shows the track beneath it.
-
-### 7.5 Text Input (`textField`)
-- **Dimensions**: `height: 26px`, `radius: 7px`, padding `0 8px`.
-- **Frame**: Inset border `rgba(0,0,0,0.13)` (dark: `rgba(255,255,255,0.13)`).
-- **Focus Glow**: `120ms` transition into `box-shadow: 0 0 0 3.5px pal.accent.Alpha(0.32), inset 0 0 0 1px pal.accent.Alpha(0.75)`.
-
-### 7.6 Button (`button`)
-- **Dimensions**: `height: 30px`, `radius: 8px`, padding `0 14px`, gap `8px`.
-- **Primary**: `pal.accent` fill, white text, lighten by 8% on hover.
-- **Secondary**: `pal.control` fill with control shadow, darken by 8% on press.
-
----
-
-## 8. Search & Highlighting Engine
-
-- **Three-Way Matching**: Settings entries match against user-visible label, config file key (e.g. `session-name`), and search aliases.
-- **Auto-Navigation & Scroll**: Typing in the sidebar search switches to the first matching page and executes `ScrollIntoView()` on the top hit.
-- **Highlight Pill (`searchHighlight`)**:
-  - The matched row displays an animated focus pill:
-  - Radius: `8px`, expanded `dx` / `dy` around content.
-  - Background: `pal.accent.Alpha(0.13 * t)`.
-  - Inset stroke: `pal.accent.Alpha(0.28 * t)`.
-  - Transition: `180ms`.
-
----
-
-## 9. Motion & Physics Reference
-
-- **Sidebar Slide**: `260ms`, `CubicBezier(0.25, 1, 0.5, 1)`.
-- **Card Relocation / Pane Drag**: Spring `Duration: 420ms`, `Bounce: 0.18`.
-- **Color Transitions (Hover/Active)**: `90ms ~ 120ms` linear or ease-out.
-- **Unfocused Pane Veil**: `160ms` fade.
-
----
-
-## 10. File References
+## 6. File References
 
 - Ready-to-import CSS variables: [tokens.css](file:///Users/carl/.gemini/config/skills/agent-desktop-ui/references/tokens.css)
 - Raw JSON token dictionary: [tokens.json](file:///Users/carl/.gemini/config/skills/agent-desktop-ui/references/tokens.json)
